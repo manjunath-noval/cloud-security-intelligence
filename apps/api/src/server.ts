@@ -2,6 +2,7 @@ import { prisma } from "./db.js";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import resourcesRouter from "./routes/resources.js";
 import cloudAccountsRouter from "./routes/cloudAccounts.js";
 dotenv.config({ path: "../../.env" });
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/resources", resourcesRouter);
 app.use("/api/cloud-accounts", cloudAccountsRouter);
 
 app.get("/health", (_req, res) => {

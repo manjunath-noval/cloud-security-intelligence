@@ -214,6 +214,7 @@ export type CloudAccountWhereInput = {
   isActive?: Prisma.BoolFilter<"CloudAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CloudAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CloudAccount"> | Date | string
+  resources?: Prisma.CloudResourceListRelationFilter
 }
 
 export type CloudAccountOrderByWithRelationInput = {
@@ -226,6 +227,7 @@ export type CloudAccountOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  resources?: Prisma.CloudResourceOrderByRelationAggregateInput
 }
 
 export type CloudAccountWhereUniqueInput = Prisma.AtLeast<{
@@ -241,6 +243,7 @@ export type CloudAccountWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"CloudAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CloudAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CloudAccount"> | Date | string
+  resources?: Prisma.CloudResourceListRelationFilter
 }, "id">
 
 export type CloudAccountOrderByWithAggregationInput = {
@@ -283,6 +286,7 @@ export type CloudAccountCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  resources?: Prisma.CloudResourceCreateNestedManyWithoutCloudAccountInput
 }
 
 export type CloudAccountUncheckedCreateInput = {
@@ -295,6 +299,7 @@ export type CloudAccountUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  resources?: Prisma.CloudResourceUncheckedCreateNestedManyWithoutCloudAccountInput
 }
 
 export type CloudAccountUpdateInput = {
@@ -307,6 +312,7 @@ export type CloudAccountUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resources?: Prisma.CloudResourceUpdateManyWithoutCloudAccountNestedInput
 }
 
 export type CloudAccountUncheckedUpdateInput = {
@@ -319,6 +325,7 @@ export type CloudAccountUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resources?: Prisma.CloudResourceUncheckedUpdateManyWithoutCloudAccountNestedInput
 }
 
 export type CloudAccountCreateManyInput = {
@@ -393,6 +400,11 @@ export type CloudAccountMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type CloudAccountScalarRelationFilter = {
+  is?: Prisma.CloudAccountWhereInput
+  isNot?: Prisma.CloudAccountWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -409,6 +421,113 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type CloudAccountCreateNestedOneWithoutResourcesInput = {
+  create?: Prisma.XOR<Prisma.CloudAccountCreateWithoutResourcesInput, Prisma.CloudAccountUncheckedCreateWithoutResourcesInput>
+  connectOrCreate?: Prisma.CloudAccountCreateOrConnectWithoutResourcesInput
+  connect?: Prisma.CloudAccountWhereUniqueInput
+}
+
+export type CloudAccountUpdateOneRequiredWithoutResourcesNestedInput = {
+  create?: Prisma.XOR<Prisma.CloudAccountCreateWithoutResourcesInput, Prisma.CloudAccountUncheckedCreateWithoutResourcesInput>
+  connectOrCreate?: Prisma.CloudAccountCreateOrConnectWithoutResourcesInput
+  upsert?: Prisma.CloudAccountUpsertWithoutResourcesInput
+  connect?: Prisma.CloudAccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CloudAccountUpdateToOneWithWhereWithoutResourcesInput, Prisma.CloudAccountUpdateWithoutResourcesInput>, Prisma.CloudAccountUncheckedUpdateWithoutResourcesInput>
+}
+
+export type CloudAccountCreateWithoutResourcesInput = {
+  id?: string
+  name: string
+  provider: string
+  accountId: string
+  environment?: string
+  region?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CloudAccountUncheckedCreateWithoutResourcesInput = {
+  id?: string
+  name: string
+  provider: string
+  accountId: string
+  environment?: string
+  region?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CloudAccountCreateOrConnectWithoutResourcesInput = {
+  where: Prisma.CloudAccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.CloudAccountCreateWithoutResourcesInput, Prisma.CloudAccountUncheckedCreateWithoutResourcesInput>
+}
+
+export type CloudAccountUpsertWithoutResourcesInput = {
+  update: Prisma.XOR<Prisma.CloudAccountUpdateWithoutResourcesInput, Prisma.CloudAccountUncheckedUpdateWithoutResourcesInput>
+  create: Prisma.XOR<Prisma.CloudAccountCreateWithoutResourcesInput, Prisma.CloudAccountUncheckedCreateWithoutResourcesInput>
+  where?: Prisma.CloudAccountWhereInput
+}
+
+export type CloudAccountUpdateToOneWithWhereWithoutResourcesInput = {
+  where?: Prisma.CloudAccountWhereInput
+  data: Prisma.XOR<Prisma.CloudAccountUpdateWithoutResourcesInput, Prisma.CloudAccountUncheckedUpdateWithoutResourcesInput>
+}
+
+export type CloudAccountUpdateWithoutResourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string
+  environment?: Prisma.StringFieldUpdateOperationsInput | string
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CloudAccountUncheckedUpdateWithoutResourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string
+  environment?: Prisma.StringFieldUpdateOperationsInput | string
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type CloudAccountCountOutputType
+ */
+
+export type CloudAccountCountOutputType = {
+  resources: number
+}
+
+export type CloudAccountCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  resources?: boolean | CloudAccountCountOutputTypeCountResourcesArgs
+}
+
+/**
+ * CloudAccountCountOutputType without action
+ */
+export type CloudAccountCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CloudAccountCountOutputType
+   */
+  select?: Prisma.CloudAccountCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CloudAccountCountOutputType without action
+ */
+export type CloudAccountCountOutputTypeCountResourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CloudResourceWhereInput
+}
 
 
 export type CloudAccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -421,6 +540,8 @@ export type CloudAccountSelect<ExtArgs extends runtime.Types.Extensions.Internal
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  resources?: boolean | Prisma.CloudAccount$resourcesArgs<ExtArgs>
+  _count?: boolean | Prisma.CloudAccountCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cloudAccount"]>
 
 export type CloudAccountSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -460,10 +581,18 @@ export type CloudAccountSelectScalar = {
 }
 
 export type CloudAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "provider" | "accountId" | "environment" | "region" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["cloudAccount"]>
+export type CloudAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  resources?: boolean | Prisma.CloudAccount$resourcesArgs<ExtArgs>
+  _count?: boolean | Prisma.CloudAccountCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type CloudAccountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type CloudAccountIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $CloudAccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CloudAccount"
-  objects: {}
+  objects: {
+    resources: Prisma.$CloudResourcePayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -868,6 +997,7 @@ readonly fields: CloudAccountFieldRefs;
  */
 export interface Prisma__CloudAccountClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  resources<T extends Prisma.CloudAccount$resourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CloudAccount$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CloudResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -923,6 +1053,10 @@ export type CloudAccountFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
+  /**
    * Filter, which CloudAccount to fetch.
    */
   where: Prisma.CloudAccountWhereUniqueInput
@@ -941,6 +1075,10 @@ export type CloudAccountFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
+  /**
    * Filter, which CloudAccount to fetch.
    */
   where: Prisma.CloudAccountWhereUniqueInput
@@ -958,6 +1096,10 @@ export type CloudAccountFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the CloudAccount
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
   /**
    * Filter, which CloudAccount to fetch.
    */
@@ -1007,6 +1149,10 @@ export type CloudAccountFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
+  /**
    * Filter, which CloudAccount to fetch.
    */
   where?: Prisma.CloudAccountWhereInput
@@ -1054,6 +1200,10 @@ export type CloudAccountFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the CloudAccount
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
   /**
    * Filter, which CloudAccounts to fetch.
    */
@@ -1103,6 +1253,10 @@ export type CloudAccountCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
+  /**
    * The data needed to create a CloudAccount.
    */
   data: Prisma.XOR<Prisma.CloudAccountCreateInput, Prisma.CloudAccountUncheckedCreateInput>
@@ -1150,6 +1304,10 @@ export type CloudAccountUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the CloudAccount
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
   /**
    * The data needed to update a CloudAccount.
    */
@@ -1217,6 +1375,10 @@ export type CloudAccountUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
+  /**
    * The filter to search for the CloudAccount to update in case it exists.
    */
   where: Prisma.CloudAccountWhereUniqueInput
@@ -1243,6 +1405,10 @@ export type CloudAccountDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
+  /**
    * Filter which CloudAccount to delete.
    */
   where: Prisma.CloudAccountWhereUniqueInput
@@ -1263,6 +1429,30 @@ export type CloudAccountDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * CloudAccount.resources
+ */
+export type CloudAccount$resourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CloudResource
+   */
+  select?: Prisma.CloudResourceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CloudResource
+   */
+  omit?: Prisma.CloudResourceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudResourceInclude<ExtArgs> | null
+  where?: Prisma.CloudResourceWhereInput
+  orderBy?: Prisma.CloudResourceOrderByWithRelationInput | Prisma.CloudResourceOrderByWithRelationInput[]
+  cursor?: Prisma.CloudResourceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CloudResourceScalarFieldEnum | Prisma.CloudResourceScalarFieldEnum[]
+}
+
+/**
  * CloudAccount without action
  */
 export type CloudAccountDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1274,4 +1464,8 @@ export type CloudAccountDefaultArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the CloudAccount
    */
   omit?: Prisma.CloudAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudAccountInclude<ExtArgs> | null
 }

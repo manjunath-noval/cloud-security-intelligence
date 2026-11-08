@@ -99,6 +99,41 @@ router.patch("/:id/deactivate", async (req, res) => {
     });
   }
 });
+router.patch("/:id/activate", async (req, res) => {
+  try {
+    const existingAccount = await prisma.cloudAccount.findUnique({
+      where: { id: req.params.id }
+    });
+
+    if (!existingAccount) {
+      return res.status(404).json({
+        error: "Cloud account not found."
+      });
+    }
+
+    if (existingAccount.isActive) {
+      return res.status(409).json({
+        error: "Cloud account is already active."
+      });
+    }
+
+    const account = await prisma.cloudAccount.update({
+      where: { id: req.params.id },
+      data: { isActive: true }
+    });
+
+    return res.status(200).json({
+      message: "Cloud account activated successfully.",
+      account
+    });
+  } catch (error) {
+    console.error("Cloud account activation failed:", error);
+
+    return res.status(500).json({
+      error: "Unable to activate cloud account."
+    });
+  }
+});
 
 router.post("/", async (req, res) => {
   const validation = createCloudAccountSchema.safeParse(req.body);

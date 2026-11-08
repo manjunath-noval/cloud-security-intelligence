@@ -46,3 +46,8 @@ export { Prisma }
  * 
  */
 export type CloudAccount = Prisma.CloudAccountModel
+/**
+ * Model CloudResource
+ * 
+ */
+export type CloudResource = Prisma.CloudResourceModel

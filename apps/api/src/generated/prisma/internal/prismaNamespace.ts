@@ -397,7 +397,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  CloudAccount: 'CloudAccount'
+  CloudAccount: 'CloudAccount',
+  CloudResource: 'CloudResource'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cloudAccount"
+    modelProps: "cloudAccount" | "cloudResource"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -491,6 +492,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CloudResource: {
+      payload: Prisma.$CloudResourcePayload<ExtArgs>
+      fields: Prisma.CloudResourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CloudResourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CloudResourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>
+        }
+        findFirst: {
+          args: Prisma.CloudResourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CloudResourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>
+        }
+        findMany: {
+          args: Prisma.CloudResourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>[]
+        }
+        create: {
+          args: Prisma.CloudResourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>
+        }
+        createMany: {
+          args: Prisma.CloudResourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CloudResourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>[]
+        }
+        delete: {
+          args: Prisma.CloudResourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>
+        }
+        update: {
+          args: Prisma.CloudResourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.CloudResourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CloudResourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CloudResourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.CloudResourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudResourcePayload>
+        }
+        aggregate: {
+          args: Prisma.CloudResourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCloudResource>
+        }
+        groupBy: {
+          args: Prisma.CloudResourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudResourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CloudResourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudResourceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -545,12 +620,36 @@ export const CloudAccountScalarFieldEnum = {
 export type CloudAccountScalarFieldEnum = (typeof CloudAccountScalarFieldEnum)[keyof typeof CloudAccountScalarFieldEnum]
 
 
+export const CloudResourceScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerResourceId: 'providerResourceId',
+  name: 'name',
+  resourceType: 'resourceType',
+  provider: 'provider',
+  region: 'region',
+  metadata: 'metadata',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudResourceScalarFieldEnum = (typeof CloudResourceScalarFieldEnum)[keyof typeof CloudResourceScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -567,6 +666,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -607,6 +715,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -775,6 +897,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   cloudAccount?: Prisma.CloudAccountOmit
+  cloudResource?: Prisma.CloudResourceOmit
 }
 
 /* Types for Logging */

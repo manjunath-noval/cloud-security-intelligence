@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -17,4 +18,33 @@ model CloudAccount {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  resources   CloudResource[]
+
+  @@index([provider, accountId])
+}
+
+model CloudResource {
+  id                 String   @id @default(uuid())
+  cloudAccountId     String
+
+  providerResourceId String
+  name               String
+  resourceType       String
+  provider           String
+  region             String?
+
+  metadata           Json     @default("{}")
+  discoverySource    String   @default("SIMULATED")
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  cloudAccount       CloudAccount @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
+
+  @@unique([cloudAccountId, providerResourceId])
+  @@index([cloudAccountId])
+  @@index([provider, resourceType])
+  @@index([region])
+  @@index([discoverySource])
 }
