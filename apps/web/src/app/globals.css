@@ -1,26 +1,303 @@
+
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* =========================================
+   CLOUD SECURITY INTELLIGENCE
+   Global Design System
+========================================= */
+
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  /* Core surfaces */
+  --background: #090d16;
+  --foreground: #f1f5f9;
+  --card: #101827;
+  --card-foreground: #f1f5f9;
+  --popover: #151f30;
+  --popover-foreground: #f1f5f9;
+
+  /* Brand */
+  --primary: #38bdf8;
+  --primary-foreground: #06121c;
+
+  /* Secondary surfaces */
+  --secondary: #1b293d;
+  --secondary-foreground: #e2e8f0;
+  --muted: #172235;
+  --muted-foreground: #94a3b8;
+  --accent: #1b293d;
+  --accent-foreground: #f1f5f9;
+
+  /* Status */
+  --destructive: #fb7185;
+  --success: #34d399;
+  --warning: #fbbf24;
+
+  /* Borders and inputs */
+  --border: #243247;
+  --input: #243247;
+  --ring: #38bdf8;
+
+  /* Charts */
+  --chart-1: #38bdf8;
+  --chart-2: #34d399;
+  --chart-3: #a78bfa;
+  --chart-4: #fbbf24;
+  --chart-5: #fb7185;
+
+  /* Sidebar */
+  --sidebar: #0c1320;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #38bdf8;
+  --sidebar-primary-foreground: #06121c;
+  --sidebar-accent: #172235;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: #1e2a3b;
+  --sidebar-ring: #38bdf8;
+
+  /* Custom design tokens */
+  --surface: #101827;
+  --surface-elevated: #151f30;
+  --surface-hover: #1b293d;
+  --border-subtle: #1b293b;
+
+  --primary-hover: #0ea5e9;
+  --radius: 0.75rem;
 }
+
+
+/* Light theme */
+
+
+.light {
+  color-scheme: light;
+
+  --background: #f7f9fc;
+  --foreground: #172033;
+  --card: #ffffff;
+  --card-foreground: #172033;
+  --popover: #ffffff;
+  --popover-foreground: #172033;
+
+  --primary: #0284c7;
+  --primary-foreground: #ffffff;
+
+  --secondary: #eef3f9;
+  --secondary-foreground: #263449;
+  --muted: #eef3f9;
+  --muted-foreground: #64748b;
+  --accent: #e8f4fb;
+  --accent-foreground: #075985;
+
+  --destructive: #e11d48;
+  --success: #059669;
+  --warning: #d97706;
+
+  --border: #dce4ef;
+  --input: #dce4ef;
+  --ring: #0284c7;
+
+  --chart-1: #0284c7;
+  --chart-2: #059669;
+  --chart-3: #7c3aed;
+  --chart-4: #d97706;
+  --chart-5: #e11d48;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #172033;
+  --sidebar-primary: #0284c7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef3f9;
+  --sidebar-accent-foreground: #172033;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #0284c7;
+
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-hover: #eef3f9;
+  --border-subtle: #e8edf4;
+
+  --primary-hover: #0369a1;
+}
+
+
+/* Tailwind CSS 4 theme tokens */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --radius-lg: var(--radius);
+
+  --font-heading: var(--font-sans);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-sidebar-border: var(--sidebar-border);
+
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+  --color-sidebar-accent: var(--sidebar-accent);
+
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  --color-sidebar-primary: var(--sidebar-primary);
+
+  --color-sidebar-foreground: var(--sidebar-foreground);
+
+  --color-sidebar: var(--sidebar);
+
+  --color-chart-5: var(--chart-5);
+
+  --color-chart-4: var(--chart-4);
+
+  --color-chart-3: var(--chart-3);
+
+  --color-chart-2: var(--chart-2);
+
+  --color-chart-1: var(--chart-1);
+
+  --color-ring: var(--ring);
+
+  --color-input: var(--input);
+
+  --color-destructive: var(--destructive);
+
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-accent: var(--accent);
+
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-secondary: var(--secondary);
+
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-popover: var(--popover);
+
+  --color-card-foreground: var(--card-foreground);
+
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+
+  --radius-md: calc(var(--radius) * 0.8);
+
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base styles */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  min-height: 100vh;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Selection */
+
+::selection {
+  background: rgb(56 189 248 / 25%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Accessible keyboard focus */
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+.dark {
+  color-scheme: dark;
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
