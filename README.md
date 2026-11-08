@@ -157,3 +157,10 @@ The cloud account management workspace allows users to register
 cloud environments and monitor their account status.
 
 ![Cloud Account Management](./cloud-accounts.png)
+
+### Resource Inventory
+
+Explore discovered cloud resources across registered environments.
+The current Azure discovery adapter uses simulated development data.
+
+![Resource Inventory](resource-inventory.png)
