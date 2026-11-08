@@ -157,5 +157,3 @@ The cloud account management workspace allows users to register
 cloud environments and monitor their account status.
 
 ![Cloud Account Management](./cloud-accounts.png)
-
-![Cloud Account Management](cloud-accounts.png)
