@@ -142,15 +142,20 @@ cloud-security-intelligence/
 - Docker Compose
 - Git
 
-### 1. Clone the repository
+1. Clone the repository
 
 ```bash
-git clone https://github.com/man
+git clone https://github.com/manjunath-novus/cloud-security-intelligence.git
+cd cloud-security-intelligence
+```
+
 ## Application Screenshots
 
 ### Cloud Account Management
 
 The cloud account management workspace allows users to register
 cloud environments and monitor their account status.
+
+![Cloud Account Management](./cloud-accounts.png)
 
 ![Cloud Account Management](cloud-accounts.png)
