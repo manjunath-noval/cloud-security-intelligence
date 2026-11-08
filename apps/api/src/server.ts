@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import resourcesRouter from "./routes/resources.js";
 import cloudAccountsRouter from "./routes/cloudAccounts.js";
+import securityRouter from "./routes/security.js";
 dotenv.config({ path: "../../.env" });
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/resources", resourcesRouter);
 app.use("/api/cloud-accounts", cloudAccountsRouter);
+app.use("/api/security", securityRouter);
 
 app.get("/health", (_req, res) => {
   res.status(200).json({

@@ -8,6 +8,21 @@ datasource db {
   provider = "postgresql"
 }
 
+enum SecuritySeverity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFORMATIONAL
+}
+
+enum FindingStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+
 model CloudAccount {
   id          String   @id @default(uuid())
   name        String
@@ -23,6 +38,7 @@ model CloudAccount {
 
   @@index([provider, accountId])
 }
+
 
 model CloudResource {
   id                 String   @id @default(uuid())
@@ -41,10 +57,41 @@ model CloudResource {
   updatedAt          DateTime @updatedAt
 
   cloudAccount       CloudAccount @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
+  findings           SecurityFinding[]
 
   @@unique([cloudAccountId, providerResourceId])
   @@index([cloudAccountId])
   @@index([provider, resourceType])
   @@index([region])
   @@index([discoverySource])
+}
+
+
+model SecurityFinding {
+  id             String           @id @default(uuid())
+  cloudResourceId String
+
+  ruleId         String
+  title          String
+  description    String
+  severity       SecuritySeverity
+  status         FindingStatus    @default(OPEN)
+
+  evidence       Json             @default("{}")
+  remediation    String
+
+  firstDetectedAt DateTime        @default(now())
+  lastDetectedAt  DateTime        @default(now())
+  resolvedAt      DateTime?
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  cloudResource  CloudResource    @relation(fields: [cloudResourceId], references: [id], onDelete: Cascade)
+
+  @@unique([cloudResourceId, ruleId])
+  @@index([severity, status])
+  @@index([cloudResourceId])
+  @@index([ruleId])
+  @@index([status])
 }
