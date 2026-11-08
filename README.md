@@ -50,6 +50,28 @@ The project follows a simple workflow:
 | Web application | Next.js |
 | Local infrastructure | Docker Compose, PostgreSQL and Redis |
 
+### Security Detection Engine
+
+The security detection engine evaluates discovered cloud resources against predefined security rules to identify configuration risks.
+
+**Currently implemented security rules:**
+
+| Rule ID | Security Check | Severity |
+|---|---|---|
+| `AZ-STORAGE-001` | Detects publicly accessible storage resources | HIGH |
+| `AZ-NSG-001` | Detects network security groups allowing SSH (port 22) from any source | CRITICAL |
+
+**Security scanning workflow:**
+1. Select a registered cloud account.
+2. Trigger a security scan through the API.
+3. Evaluate discovered resources against security rules.
+4. Persist detected findings in PostgreSQL.
+
+**API endpoint:**
+
+`POST /api/security/scan/:cloudAccountId`
+
+*Note: Azure resource discovery currently uses simulated development data. These checks demonstrate the implemented detection logic, not live Azure security monitoring.*
 ## Security Checks
 
 | Rule ID | Security check | Severity |
