@@ -53,6 +53,9 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   CloudAccount: 'CloudAccount',
   CloudResource: 'CloudResource',
+  CloudIdentity: 'CloudIdentity',
+  CloudRoleDefinition: 'CloudRoleDefinition',
+  CloudRoleAssignment: 'CloudRoleAssignment',
   SecurityFinding: 'SecurityFinding',
   SecurityFindingEvent: 'SecurityFindingEvent'
 } as const
@@ -105,9 +108,61 @@ export const CloudResourceScalarFieldEnum = {
 export type CloudResourceScalarFieldEnum = (typeof CloudResourceScalarFieldEnum)[keyof typeof CloudResourceScalarFieldEnum]
 
 
+export const CloudIdentityScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerIdentityId: 'providerIdentityId',
+  displayName: 'displayName',
+  identityType: 'identityType',
+  userPrincipalName: 'userPrincipalName',
+  isEnabled: 'isEnabled',
+  metadata: 'metadata',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudIdentityScalarFieldEnum = (typeof CloudIdentityScalarFieldEnum)[keyof typeof CloudIdentityScalarFieldEnum]
+
+
+export const CloudRoleDefinitionScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerRoleDefinitionId: 'providerRoleDefinitionId',
+  name: 'name',
+  description: 'description',
+  isBuiltIn: 'isBuiltIn',
+  permissions: 'permissions',
+  assignableScopes: 'assignableScopes',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudRoleDefinitionScalarFieldEnum = (typeof CloudRoleDefinitionScalarFieldEnum)[keyof typeof CloudRoleDefinitionScalarFieldEnum]
+
+
+export const CloudRoleAssignmentScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerAssignmentId: 'providerAssignmentId',
+  cloudIdentityId: 'cloudIdentityId',
+  cloudRoleDefinitionId: 'cloudRoleDefinitionId',
+  scope: 'scope',
+  condition: 'condition',
+  conditionVersion: 'conditionVersion',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudRoleAssignmentScalarFieldEnum = (typeof CloudRoleAssignmentScalarFieldEnum)[keyof typeof CloudRoleAssignmentScalarFieldEnum]
+
+
 export const SecurityFindingScalarFieldEnum = {
   id: 'id',
   cloudResourceId: 'cloudResourceId',
+  cloudIdentityId: 'cloudIdentityId',
   ruleId: 'ruleId',
   title: 'title',
   description: 'description',

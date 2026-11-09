@@ -27,6 +27,7 @@ export type AggregateSecurityFinding = {
 export type SecurityFindingMinAggregateOutputType = {
   id: string | null
   cloudResourceId: string | null
+  cloudIdentityId: string | null
   ruleId: string | null
   title: string | null
   description: string | null
@@ -45,6 +46,7 @@ export type SecurityFindingMinAggregateOutputType = {
 export type SecurityFindingMaxAggregateOutputType = {
   id: string | null
   cloudResourceId: string | null
+  cloudIdentityId: string | null
   ruleId: string | null
   title: string | null
   description: string | null
@@ -63,6 +65,7 @@ export type SecurityFindingMaxAggregateOutputType = {
 export type SecurityFindingCountAggregateOutputType = {
   id: number
   cloudResourceId: number
+  cloudIdentityId: number
   ruleId: number
   title: number
   description: number
@@ -84,6 +87,7 @@ export type SecurityFindingCountAggregateOutputType = {
 export type SecurityFindingMinAggregateInputType = {
   id?: true
   cloudResourceId?: true
+  cloudIdentityId?: true
   ruleId?: true
   title?: true
   description?: true
@@ -102,6 +106,7 @@ export type SecurityFindingMinAggregateInputType = {
 export type SecurityFindingMaxAggregateInputType = {
   id?: true
   cloudResourceId?: true
+  cloudIdentityId?: true
   ruleId?: true
   title?: true
   description?: true
@@ -120,6 +125,7 @@ export type SecurityFindingMaxAggregateInputType = {
 export type SecurityFindingCountAggregateInputType = {
   id?: true
   cloudResourceId?: true
+  cloudIdentityId?: true
   ruleId?: true
   title?: true
   description?: true
@@ -211,7 +217,8 @@ export type SecurityFindingGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type SecurityFindingGroupByOutputType = {
   id: string
-  cloudResourceId: string
+  cloudResourceId: string | null
+  cloudIdentityId: string | null
   ruleId: string
   title: string
   description: string
@@ -251,7 +258,8 @@ export type SecurityFindingWhereInput = {
   OR?: Prisma.SecurityFindingWhereInput[]
   NOT?: Prisma.SecurityFindingWhereInput | Prisma.SecurityFindingWhereInput[]
   id?: Prisma.StringFilter<"SecurityFinding"> | string
-  cloudResourceId?: Prisma.StringFilter<"SecurityFinding"> | string
+  cloudResourceId?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+  cloudIdentityId?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
   ruleId?: Prisma.StringFilter<"SecurityFinding"> | string
   title?: Prisma.StringFilter<"SecurityFinding"> | string
   description?: Prisma.StringFilter<"SecurityFinding"> | string
@@ -267,12 +275,14 @@ export type SecurityFindingWhereInput = {
   acknowledgedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
   resolutionNote?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
   events?: Prisma.SecurityFindingEventListRelationFilter
-  cloudResource?: Prisma.XOR<Prisma.CloudResourceScalarRelationFilter, Prisma.CloudResourceWhereInput>
+  cloudResource?: Prisma.XOR<Prisma.CloudResourceNullableScalarRelationFilter, Prisma.CloudResourceWhereInput> | null
+  cloudIdentity?: Prisma.XOR<Prisma.CloudIdentityNullableScalarRelationFilter, Prisma.CloudIdentityWhereInput> | null
 }
 
 export type SecurityFindingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  cloudResourceId?: Prisma.SortOrder
+  cloudResourceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cloudIdentityId?: Prisma.SortOrderInput | Prisma.SortOrder
   ruleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -289,15 +299,18 @@ export type SecurityFindingOrderByWithRelationInput = {
   resolutionNote?: Prisma.SortOrderInput | Prisma.SortOrder
   events?: Prisma.SecurityFindingEventOrderByRelationAggregateInput
   cloudResource?: Prisma.CloudResourceOrderByWithRelationInput
+  cloudIdentity?: Prisma.CloudIdentityOrderByWithRelationInput
 }
 
 export type SecurityFindingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   cloudResourceId_ruleId?: Prisma.SecurityFindingCloudResourceIdRuleIdCompoundUniqueInput
+  cloudIdentityId_ruleId?: Prisma.SecurityFindingCloudIdentityIdRuleIdCompoundUniqueInput
   AND?: Prisma.SecurityFindingWhereInput | Prisma.SecurityFindingWhereInput[]
   OR?: Prisma.SecurityFindingWhereInput[]
   NOT?: Prisma.SecurityFindingWhereInput | Prisma.SecurityFindingWhereInput[]
-  cloudResourceId?: Prisma.StringFilter<"SecurityFinding"> | string
+  cloudResourceId?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+  cloudIdentityId?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
   ruleId?: Prisma.StringFilter<"SecurityFinding"> | string
   title?: Prisma.StringFilter<"SecurityFinding"> | string
   description?: Prisma.StringFilter<"SecurityFinding"> | string
@@ -313,12 +326,14 @@ export type SecurityFindingWhereUniqueInput = Prisma.AtLeast<{
   acknowledgedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
   resolutionNote?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
   events?: Prisma.SecurityFindingEventListRelationFilter
-  cloudResource?: Prisma.XOR<Prisma.CloudResourceScalarRelationFilter, Prisma.CloudResourceWhereInput>
-}, "id" | "cloudResourceId_ruleId">
+  cloudResource?: Prisma.XOR<Prisma.CloudResourceNullableScalarRelationFilter, Prisma.CloudResourceWhereInput> | null
+  cloudIdentity?: Prisma.XOR<Prisma.CloudIdentityNullableScalarRelationFilter, Prisma.CloudIdentityWhereInput> | null
+}, "id" | "cloudResourceId_ruleId" | "cloudIdentityId_ruleId">
 
 export type SecurityFindingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  cloudResourceId?: Prisma.SortOrder
+  cloudResourceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cloudIdentityId?: Prisma.SortOrderInput | Prisma.SortOrder
   ruleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -343,7 +358,8 @@ export type SecurityFindingScalarWhereWithAggregatesInput = {
   OR?: Prisma.SecurityFindingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SecurityFindingScalarWhereWithAggregatesInput | Prisma.SecurityFindingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SecurityFinding"> | string
-  cloudResourceId?: Prisma.StringWithAggregatesFilter<"SecurityFinding"> | string
+  cloudResourceId?: Prisma.StringNullableWithAggregatesFilter<"SecurityFinding"> | string | null
+  cloudIdentityId?: Prisma.StringNullableWithAggregatesFilter<"SecurityFinding"> | string | null
   ruleId?: Prisma.StringWithAggregatesFilter<"SecurityFinding"> | string
   title?: Prisma.StringWithAggregatesFilter<"SecurityFinding"> | string
   description?: Prisma.StringWithAggregatesFilter<"SecurityFinding"> | string
@@ -377,12 +393,14 @@ export type SecurityFindingCreateInput = {
   acknowledgedAt?: Date | string | null
   resolutionNote?: string | null
   events?: Prisma.SecurityFindingEventCreateNestedManyWithoutFindingInput
-  cloudResource: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
+  cloudResource?: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
+  cloudIdentity?: Prisma.CloudIdentityCreateNestedOneWithoutFindingsInput
 }
 
 export type SecurityFindingUncheckedCreateInput = {
   id?: string
-  cloudResourceId: string
+  cloudResourceId?: string | null
+  cloudIdentityId?: string | null
   ruleId: string
   title: string
   description: string
@@ -417,12 +435,14 @@ export type SecurityFindingUpdateInput = {
   acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   events?: Prisma.SecurityFindingEventUpdateManyWithoutFindingNestedInput
-  cloudResource?: Prisma.CloudResourceUpdateOneRequiredWithoutFindingsNestedInput
+  cloudResource?: Prisma.CloudResourceUpdateOneWithoutFindingsNestedInput
+  cloudIdentity?: Prisma.CloudIdentityUpdateOneWithoutFindingsNestedInput
 }
 
 export type SecurityFindingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  cloudResourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudResourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cloudIdentityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruleId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -442,7 +462,8 @@ export type SecurityFindingUncheckedUpdateInput = {
 
 export type SecurityFindingCreateManyInput = {
   id?: string
-  cloudResourceId: string
+  cloudResourceId?: string | null
+  cloudIdentityId?: string | null
   ruleId: string
   title: string
   description: string
@@ -479,7 +500,8 @@ export type SecurityFindingUpdateManyMutationInput = {
 
 export type SecurityFindingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  cloudResourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudResourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cloudIdentityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruleId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -511,9 +533,15 @@ export type SecurityFindingCloudResourceIdRuleIdCompoundUniqueInput = {
   ruleId: string
 }
 
+export type SecurityFindingCloudIdentityIdRuleIdCompoundUniqueInput = {
+  cloudIdentityId: string
+  ruleId: string
+}
+
 export type SecurityFindingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cloudResourceId?: Prisma.SortOrder
+  cloudIdentityId?: Prisma.SortOrder
   ruleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -533,6 +561,7 @@ export type SecurityFindingCountOrderByAggregateInput = {
 export type SecurityFindingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cloudResourceId?: Prisma.SortOrder
+  cloudIdentityId?: Prisma.SortOrder
   ruleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -551,6 +580,7 @@ export type SecurityFindingMaxOrderByAggregateInput = {
 export type SecurityFindingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   cloudResourceId?: Prisma.SortOrder
+  cloudIdentityId?: Prisma.SortOrder
   ruleId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -613,6 +643,48 @@ export type SecurityFindingUncheckedUpdateManyWithoutCloudResourceNestedInput = 
   deleteMany?: Prisma.SecurityFindingScalarWhereInput | Prisma.SecurityFindingScalarWhereInput[]
 }
 
+export type SecurityFindingCreateNestedManyWithoutCloudIdentityInput = {
+  create?: Prisma.XOR<Prisma.SecurityFindingCreateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput> | Prisma.SecurityFindingCreateWithoutCloudIdentityInput[] | Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput[]
+  connectOrCreate?: Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput | Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput[]
+  createMany?: Prisma.SecurityFindingCreateManyCloudIdentityInputEnvelope
+  connect?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+}
+
+export type SecurityFindingUncheckedCreateNestedManyWithoutCloudIdentityInput = {
+  create?: Prisma.XOR<Prisma.SecurityFindingCreateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput> | Prisma.SecurityFindingCreateWithoutCloudIdentityInput[] | Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput[]
+  connectOrCreate?: Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput | Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput[]
+  createMany?: Prisma.SecurityFindingCreateManyCloudIdentityInputEnvelope
+  connect?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+}
+
+export type SecurityFindingUpdateManyWithoutCloudIdentityNestedInput = {
+  create?: Prisma.XOR<Prisma.SecurityFindingCreateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput> | Prisma.SecurityFindingCreateWithoutCloudIdentityInput[] | Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput[]
+  connectOrCreate?: Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput | Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput[]
+  upsert?: Prisma.SecurityFindingUpsertWithWhereUniqueWithoutCloudIdentityInput | Prisma.SecurityFindingUpsertWithWhereUniqueWithoutCloudIdentityInput[]
+  createMany?: Prisma.SecurityFindingCreateManyCloudIdentityInputEnvelope
+  set?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  disconnect?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  delete?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  connect?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  update?: Prisma.SecurityFindingUpdateWithWhereUniqueWithoutCloudIdentityInput | Prisma.SecurityFindingUpdateWithWhereUniqueWithoutCloudIdentityInput[]
+  updateMany?: Prisma.SecurityFindingUpdateManyWithWhereWithoutCloudIdentityInput | Prisma.SecurityFindingUpdateManyWithWhereWithoutCloudIdentityInput[]
+  deleteMany?: Prisma.SecurityFindingScalarWhereInput | Prisma.SecurityFindingScalarWhereInput[]
+}
+
+export type SecurityFindingUncheckedUpdateManyWithoutCloudIdentityNestedInput = {
+  create?: Prisma.XOR<Prisma.SecurityFindingCreateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput> | Prisma.SecurityFindingCreateWithoutCloudIdentityInput[] | Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput[]
+  connectOrCreate?: Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput | Prisma.SecurityFindingCreateOrConnectWithoutCloudIdentityInput[]
+  upsert?: Prisma.SecurityFindingUpsertWithWhereUniqueWithoutCloudIdentityInput | Prisma.SecurityFindingUpsertWithWhereUniqueWithoutCloudIdentityInput[]
+  createMany?: Prisma.SecurityFindingCreateManyCloudIdentityInputEnvelope
+  set?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  disconnect?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  delete?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  connect?: Prisma.SecurityFindingWhereUniqueInput | Prisma.SecurityFindingWhereUniqueInput[]
+  update?: Prisma.SecurityFindingUpdateWithWhereUniqueWithoutCloudIdentityInput | Prisma.SecurityFindingUpdateWithWhereUniqueWithoutCloudIdentityInput[]
+  updateMany?: Prisma.SecurityFindingUpdateManyWithWhereWithoutCloudIdentityInput | Prisma.SecurityFindingUpdateManyWithWhereWithoutCloudIdentityInput[]
+  deleteMany?: Prisma.SecurityFindingScalarWhereInput | Prisma.SecurityFindingScalarWhereInput[]
+}
+
 export type EnumSecuritySeverityFieldUpdateOperationsInput = {
   set?: $Enums.SecuritySeverity
 }
@@ -656,10 +728,12 @@ export type SecurityFindingCreateWithoutCloudResourceInput = {
   acknowledgedAt?: Date | string | null
   resolutionNote?: string | null
   events?: Prisma.SecurityFindingEventCreateNestedManyWithoutFindingInput
+  cloudIdentity?: Prisma.CloudIdentityCreateNestedOneWithoutFindingsInput
 }
 
 export type SecurityFindingUncheckedCreateWithoutCloudResourceInput = {
   id?: string
+  cloudIdentityId?: string | null
   ruleId: string
   title: string
   description: string
@@ -708,7 +782,8 @@ export type SecurityFindingScalarWhereInput = {
   OR?: Prisma.SecurityFindingScalarWhereInput[]
   NOT?: Prisma.SecurityFindingScalarWhereInput | Prisma.SecurityFindingScalarWhereInput[]
   id?: Prisma.StringFilter<"SecurityFinding"> | string
-  cloudResourceId?: Prisma.StringFilter<"SecurityFinding"> | string
+  cloudResourceId?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+  cloudIdentityId?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
   ruleId?: Prisma.StringFilter<"SecurityFinding"> | string
   title?: Prisma.StringFilter<"SecurityFinding"> | string
   description?: Prisma.StringFilter<"SecurityFinding"> | string
@@ -723,6 +798,72 @@ export type SecurityFindingScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
   acknowledgedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
   resolutionNote?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+}
+
+export type SecurityFindingCreateWithoutCloudIdentityInput = {
+  id?: string
+  ruleId: string
+  title: string
+  description: string
+  severity: $Enums.SecuritySeverity
+  status?: $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation: string
+  firstDetectedAt?: Date | string
+  lastDetectedAt?: Date | string
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  events?: Prisma.SecurityFindingEventCreateNestedManyWithoutFindingInput
+  cloudResource?: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
+}
+
+export type SecurityFindingUncheckedCreateWithoutCloudIdentityInput = {
+  id?: string
+  cloudResourceId?: string | null
+  ruleId: string
+  title: string
+  description: string
+  severity: $Enums.SecuritySeverity
+  status?: $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation: string
+  firstDetectedAt?: Date | string
+  lastDetectedAt?: Date | string
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  events?: Prisma.SecurityFindingEventUncheckedCreateNestedManyWithoutFindingInput
+}
+
+export type SecurityFindingCreateOrConnectWithoutCloudIdentityInput = {
+  where: Prisma.SecurityFindingWhereUniqueInput
+  create: Prisma.XOR<Prisma.SecurityFindingCreateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput>
+}
+
+export type SecurityFindingCreateManyCloudIdentityInputEnvelope = {
+  data: Prisma.SecurityFindingCreateManyCloudIdentityInput | Prisma.SecurityFindingCreateManyCloudIdentityInput[]
+  skipDuplicates?: boolean
+}
+
+export type SecurityFindingUpsertWithWhereUniqueWithoutCloudIdentityInput = {
+  where: Prisma.SecurityFindingWhereUniqueInput
+  update: Prisma.XOR<Prisma.SecurityFindingUpdateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedUpdateWithoutCloudIdentityInput>
+  create: Prisma.XOR<Prisma.SecurityFindingCreateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedCreateWithoutCloudIdentityInput>
+}
+
+export type SecurityFindingUpdateWithWhereUniqueWithoutCloudIdentityInput = {
+  where: Prisma.SecurityFindingWhereUniqueInput
+  data: Prisma.XOR<Prisma.SecurityFindingUpdateWithoutCloudIdentityInput, Prisma.SecurityFindingUncheckedUpdateWithoutCloudIdentityInput>
+}
+
+export type SecurityFindingUpdateManyWithWhereWithoutCloudIdentityInput = {
+  where: Prisma.SecurityFindingScalarWhereInput
+  data: Prisma.XOR<Prisma.SecurityFindingUpdateManyMutationInput, Prisma.SecurityFindingUncheckedUpdateManyWithoutCloudIdentityInput>
 }
 
 export type SecurityFindingCreateWithoutEventsInput = {
@@ -741,12 +882,14 @@ export type SecurityFindingCreateWithoutEventsInput = {
   updatedAt?: Date | string
   acknowledgedAt?: Date | string | null
   resolutionNote?: string | null
-  cloudResource: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
+  cloudResource?: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
+  cloudIdentity?: Prisma.CloudIdentityCreateNestedOneWithoutFindingsInput
 }
 
 export type SecurityFindingUncheckedCreateWithoutEventsInput = {
   id?: string
-  cloudResourceId: string
+  cloudResourceId?: string | null
+  cloudIdentityId?: string | null
   ruleId: string
   title: string
   description: string
@@ -795,12 +938,14 @@ export type SecurityFindingUpdateWithoutEventsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cloudResource?: Prisma.CloudResourceUpdateOneRequiredWithoutFindingsNestedInput
+  cloudResource?: Prisma.CloudResourceUpdateOneWithoutFindingsNestedInput
+  cloudIdentity?: Prisma.CloudIdentityUpdateOneWithoutFindingsNestedInput
 }
 
 export type SecurityFindingUncheckedUpdateWithoutEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  cloudResourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudResourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cloudIdentityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruleId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -819,6 +964,7 @@ export type SecurityFindingUncheckedUpdateWithoutEventsInput = {
 
 export type SecurityFindingCreateManyCloudResourceInput = {
   id?: string
+  cloudIdentityId?: string | null
   ruleId: string
   title: string
   description: string
@@ -852,10 +998,12 @@ export type SecurityFindingUpdateWithoutCloudResourceInput = {
   acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   events?: Prisma.SecurityFindingEventUpdateManyWithoutFindingNestedInput
+  cloudIdentity?: Prisma.CloudIdentityUpdateOneWithoutFindingsNestedInput
 }
 
 export type SecurityFindingUncheckedUpdateWithoutCloudResourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudIdentityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruleId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -875,6 +1023,85 @@ export type SecurityFindingUncheckedUpdateWithoutCloudResourceInput = {
 
 export type SecurityFindingUncheckedUpdateManyWithoutCloudResourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudIdentityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ruleId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.EnumSecuritySeverityFieldUpdateOperationsInput | $Enums.SecuritySeverity
+  status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation?: Prisma.StringFieldUpdateOperationsInput | string
+  firstDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type SecurityFindingCreateManyCloudIdentityInput = {
+  id?: string
+  cloudResourceId?: string | null
+  ruleId: string
+  title: string
+  description: string
+  severity: $Enums.SecuritySeverity
+  status?: $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation: string
+  firstDetectedAt?: Date | string
+  lastDetectedAt?: Date | string
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+}
+
+export type SecurityFindingUpdateWithoutCloudIdentityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ruleId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.EnumSecuritySeverityFieldUpdateOperationsInput | $Enums.SecuritySeverity
+  status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation?: Prisma.StringFieldUpdateOperationsInput | string
+  firstDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.SecurityFindingEventUpdateManyWithoutFindingNestedInput
+  cloudResource?: Prisma.CloudResourceUpdateOneWithoutFindingsNestedInput
+}
+
+export type SecurityFindingUncheckedUpdateWithoutCloudIdentityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudResourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ruleId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.EnumSecuritySeverityFieldUpdateOperationsInput | $Enums.SecuritySeverity
+  status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation?: Prisma.StringFieldUpdateOperationsInput | string
+  firstDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.SecurityFindingEventUncheckedUpdateManyWithoutFindingNestedInput
+}
+
+export type SecurityFindingUncheckedUpdateManyWithoutCloudIdentityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudResourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruleId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -925,6 +1152,7 @@ export type SecurityFindingCountOutputTypeCountEventsArgs<ExtArgs extends runtim
 export type SecurityFindingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   cloudResourceId?: boolean
+  cloudIdentityId?: boolean
   ruleId?: boolean
   title?: boolean
   description?: boolean
@@ -940,13 +1168,15 @@ export type SecurityFindingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   acknowledgedAt?: boolean
   resolutionNote?: boolean
   events?: boolean | Prisma.SecurityFinding$eventsArgs<ExtArgs>
-  cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  cloudResource?: boolean | Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>
+  cloudIdentity?: boolean | Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>
   _count?: boolean | Prisma.SecurityFindingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["securityFinding"]>
 
 export type SecurityFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   cloudResourceId?: boolean
+  cloudIdentityId?: boolean
   ruleId?: boolean
   title?: boolean
   description?: boolean
@@ -961,12 +1191,14 @@ export type SecurityFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   updatedAt?: boolean
   acknowledgedAt?: boolean
   resolutionNote?: boolean
-  cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  cloudResource?: boolean | Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>
+  cloudIdentity?: boolean | Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>
 }, ExtArgs["result"]["securityFinding"]>
 
 export type SecurityFindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   cloudResourceId?: boolean
+  cloudIdentityId?: boolean
   ruleId?: boolean
   title?: boolean
   description?: boolean
@@ -981,12 +1213,14 @@ export type SecurityFindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   updatedAt?: boolean
   acknowledgedAt?: boolean
   resolutionNote?: boolean
-  cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  cloudResource?: boolean | Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>
+  cloudIdentity?: boolean | Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>
 }, ExtArgs["result"]["securityFinding"]>
 
 export type SecurityFindingSelectScalar = {
   id?: boolean
   cloudResourceId?: boolean
+  cloudIdentityId?: boolean
   ruleId?: boolean
   title?: boolean
   description?: boolean
@@ -1003,28 +1237,33 @@ export type SecurityFindingSelectScalar = {
   resolutionNote?: boolean
 }
 
-export type SecurityFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cloudResourceId" | "ruleId" | "title" | "description" | "severity" | "status" | "evidence" | "remediation" | "firstDetectedAt" | "lastDetectedAt" | "resolvedAt" | "createdAt" | "updatedAt" | "acknowledgedAt" | "resolutionNote", ExtArgs["result"]["securityFinding"]>
+export type SecurityFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cloudResourceId" | "cloudIdentityId" | "ruleId" | "title" | "description" | "severity" | "status" | "evidence" | "remediation" | "firstDetectedAt" | "lastDetectedAt" | "resolvedAt" | "createdAt" | "updatedAt" | "acknowledgedAt" | "resolutionNote", ExtArgs["result"]["securityFinding"]>
 export type SecurityFindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   events?: boolean | Prisma.SecurityFinding$eventsArgs<ExtArgs>
-  cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  cloudResource?: boolean | Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>
+  cloudIdentity?: boolean | Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>
   _count?: boolean | Prisma.SecurityFindingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SecurityFindingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  cloudResource?: boolean | Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>
+  cloudIdentity?: boolean | Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>
 }
 export type SecurityFindingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  cloudResource?: boolean | Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>
+  cloudIdentity?: boolean | Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>
 }
 
 export type $SecurityFindingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SecurityFinding"
   objects: {
     events: Prisma.$SecurityFindingEventPayload<ExtArgs>[]
-    cloudResource: Prisma.$CloudResourcePayload<ExtArgs>
+    cloudResource: Prisma.$CloudResourcePayload<ExtArgs> | null
+    cloudIdentity: Prisma.$CloudIdentityPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    cloudResourceId: string
+    cloudResourceId: string | null
+    cloudIdentityId: string | null
     ruleId: string
     title: string
     description: string
@@ -1434,7 +1673,8 @@ readonly fields: SecurityFindingFieldRefs;
 export interface Prisma__SecurityFindingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   events<T extends Prisma.SecurityFinding$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SecurityFinding$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SecurityFindingEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  cloudResource<T extends Prisma.CloudResourceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CloudResourceDefaultArgs<ExtArgs>>): Prisma.Prisma__CloudResourceClient<runtime.Types.Result.GetResult<Prisma.$CloudResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  cloudResource<T extends Prisma.SecurityFinding$cloudResourceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SecurityFinding$cloudResourceArgs<ExtArgs>>): Prisma.Prisma__CloudResourceClient<runtime.Types.Result.GetResult<Prisma.$CloudResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  cloudIdentity<T extends Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SecurityFinding$cloudIdentityArgs<ExtArgs>>): Prisma.Prisma__CloudIdentityClient<runtime.Types.Result.GetResult<Prisma.$CloudIdentityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1466,6 +1706,7 @@ export interface Prisma__SecurityFindingClient<T, Null = never, ExtArgs extends 
 export interface SecurityFindingFieldRefs {
   readonly id: Prisma.FieldRef<"SecurityFinding", 'String'>
   readonly cloudResourceId: Prisma.FieldRef<"SecurityFinding", 'String'>
+  readonly cloudIdentityId: Prisma.FieldRef<"SecurityFinding", 'String'>
   readonly ruleId: Prisma.FieldRef<"SecurityFinding", 'String'>
   readonly title: Prisma.FieldRef<"SecurityFinding", 'String'>
   readonly description: Prisma.FieldRef<"SecurityFinding", 'String'>
@@ -1902,6 +2143,44 @@ export type SecurityFinding$eventsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.SecurityFindingEventScalarFieldEnum | Prisma.SecurityFindingEventScalarFieldEnum[]
+}
+
+/**
+ * SecurityFinding.cloudResource
+ */
+export type SecurityFinding$cloudResourceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CloudResource
+   */
+  select?: Prisma.CloudResourceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CloudResource
+   */
+  omit?: Prisma.CloudResourceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudResourceInclude<ExtArgs> | null
+  where?: Prisma.CloudResourceWhereInput
+}
+
+/**
+ * SecurityFinding.cloudIdentity
+ */
+export type SecurityFinding$cloudIdentityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CloudIdentity
+   */
+  select?: Prisma.CloudIdentitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CloudIdentity
+   */
+  omit?: Prisma.CloudIdentityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CloudIdentityInclude<ExtArgs> | null
+  where?: Prisma.CloudIdentityWhereInput
 }
 
 /**

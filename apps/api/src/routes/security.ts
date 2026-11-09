@@ -66,96 +66,165 @@ router.get("/findings", async (req, res) => {
       search,
     } = validation.data;
 
-    const resourceFilters: Prisma.CloudResourceWhereInput = {};
+    
+const resourceFilters: Prisma.CloudResourceWhereInput = {};
+
+if (cloudAccountId) {
+  resourceFilters.cloudAccountId = cloudAccountId;
+}
+
+if (provider) {
+  resourceFilters.provider = provider;
+}
+
+if (resourceType) {
+  resourceFilters.resourceType = {
+    equals: resourceType,
+    mode: "insensitive",
+  };
+}
+
+const conditions: Prisma.SecurityFindingWhereInput[] = [];
+
+if (severity) conditions.push({ severity });
+if (status) conditions.push({ status });
+
+if (resourceType) {
+  // Resource-type filtering applies only to resource findings.
+  conditions.push({
+    cloudResource: {
+      is: resourceFilters,
+    },
+  });
+} else if (cloudAccountId || provider) {
+  const targetConditions: Prisma.SecurityFindingWhereInput[] = [];
+
+  if (cloudAccountId || provider) {
+    const resourceAccountFilter: Prisma.CloudResourceWhereInput = {};
+    const identityAccountFilter: Prisma.CloudAccountWhereInput = {};
 
     if (cloudAccountId) {
-      resourceFilters.cloudAccountId = cloudAccountId;
+      resourceAccountFilter.cloudAccountId = cloudAccountId;
+      identityAccountFilter.id = cloudAccountId;
     }
 
     if (provider) {
-      resourceFilters.provider = provider;
+      resourceAccountFilter.provider = provider;
+      identityAccountFilter.provider = provider;
     }
 
-    if (resourceType) {
-      resourceFilters.resourceType = {
-        equals: resourceType,
-        mode: "insensitive",
-      };
-    }
+    targetConditions.push({
+      cloudResource: {
+        is: resourceAccountFilter,
+      },
+    });
 
-    const conditions: Prisma.SecurityFindingWhereInput[] = [];
-
-    if (severity) conditions.push({ severity });
-    if (status) conditions.push({ status });
-
-    if (cloudAccountId || provider || resourceType) {
-      conditions.push({
-        cloudResource: {
-          is: resourceFilters,
+    targetConditions.push({
+      cloudIdentity: {
+        is: {
+          cloudAccount: {
+            is: identityAccountFilter,
+          },
         },
-      });
-    }
+      },
+    });
+  }
 
-    if (search) {
-      conditions.push({
-        OR: [
-          {
-            title: {
+  conditions.push({ OR: targetConditions });
+}
+
+if (search) {
+  conditions.push({
+    OR: [
+      {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+      {
+        description: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+      {
+        cloudResource: {
+          is: {
+            name: {
               contains: search,
               mode: "insensitive",
             },
           },
-          {
-            description: {
-              contains: search,
-              mode: "insensitive",
-            },
-          },
-          {
-            cloudResource: {
-              is: {
-                name: {
+        },
+      },
+      {
+        cloudIdentity: {
+          is: {
+            OR: [
+              {
+                displayName: {
                   contains: search,
                   mode: "insensitive",
                 },
               },
-            },
+              {
+                userPrincipalName: {
+                  contains: search,
+                  mode: "insensitive",
+                },
+              },
+            ],
           },
-        ],
-      });
-    }
-
+        },
+      },
+    ],
+  });
+}
     const where: Prisma.SecurityFindingWhereInput = {
       AND: conditions,
     };
 
     const [findings, total] = await Promise.all([
-      prisma.securityFinding.findMany({
-        where,
+  prisma.securityFinding.findMany({
+    where,
+    include: {
+      cloudResource: {
         include: {
-          cloudResource: {
-            include: {
-              cloudAccount: {
-                select: {
-                  id: true,
-                  name: true,
-                  provider: true,
-                  accountId: true,
-                  environment: true,
-                },
-              },
+          cloudAccount: {
+            select: {
+              id: true,
+              name: true,
+              provider: true,
+              accountId: true,
+              environment: true,
             },
           },
         },
-        orderBy: {
-          createdAt: "desc",
+      },
+      cloudIdentity: {
+        include: {
+          cloudAccount: {
+            select: {
+              id: true,
+              name: true,
+              provider: true,
+              accountId: true,
+              environment: true,
+            },
+          },
         },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  }),
 
-      prisma.securityFinding.count({ where }),
-    ]);
+  prisma.securityFinding.count({ where }),
+]);
 
     return res.status(200).json({
       findings,

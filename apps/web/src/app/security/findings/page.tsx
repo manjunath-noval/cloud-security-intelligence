@@ -57,9 +57,28 @@ type CloudResource = {
   };
 };
 
+type CloudIdentity = {
+  id: string;
+  cloudAccountId: string;
+  providerIdentityId: string;
+  displayName: string;
+  identityType: "USER" | "GROUP" | "SERVICE_PRINCIPAL" | "MANAGED_IDENTITY";
+  userPrincipalName: string | null;
+  isEnabled: boolean;
+  discoverySource: DiscoverySource;
+  cloudAccount?: {
+    id: string;
+    name: string;
+    provider: Provider;
+    accountId: string;
+    environment?: string;
+  };
+};
+
 type SecurityFinding = {
   id: string;
-  cloudResourceId: string;
+  cloudResourceId: string | null;
+  cloudIdentityId: string | null;
   ruleId: string;
   title: string;
   description: string;
@@ -72,10 +91,12 @@ type SecurityFinding = {
   resolvedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  cloudResource: CloudResource;
+  cloudResource: CloudResource | null;
+  cloudIdentity: CloudIdentity | null;
   acknowledgedAt: string | null;
   resolutionNote: string | null;
 };
+
 type FindingEvent = {
   id: string;
   findingId: string;
@@ -160,7 +181,10 @@ function providerClass(provider?: Provider) {
 }
 
 function getDiscoverySource(finding: SecurityFinding): DiscoverySource {
-  const source = finding.cloudResource?.discoverySource;
+  const source =
+    finding.cloudResource?.discoverySource ??
+    finding.cloudIdentity?.discoverySource;
+
   return source === "LIVE" ? "LIVE" : "SIMULATED";
 }
 
@@ -290,9 +314,16 @@ export default function SecurityFindingsPage() {
   }, [findings]);
 
   const resourceTypes = useMemo(
-    () => Array.from(new Set(findings.map((item) => item.cloudResource?.resourceType).filter(Boolean))).sort(),
-    [findings],
-  );
+  () =>
+    Array.from(
+      new Set(
+        findings
+          .map((item) => item.cloudResource?.resourceType)
+          .filter((type): type is string => type !== undefined)
+      )
+    ).sort(),
+  [findings],
+);
 
   const activeFilters = [
     search.trim(),
@@ -657,7 +688,7 @@ async function resolveFinding(
                 <tr>
                   <th className="px-5 py-4 font-medium">Finding</th>
                   <th className="px-5 py-4 font-medium">Severity</th>
-                  <th className="px-5 py-4 font-medium">Resource</th>
+                  <th className="px-5 py-4 font-medium">Affected Target</th>
                   <th className="px-5 py-4 font-medium">Provider</th>
                   <th className="px-5 py-4 font-medium">Status</th>
                   <th className="px-5 py-4 font-medium">Last detected</th>
@@ -686,16 +717,41 @@ async function resolveFinding(
                           <p className="mt-1 text-xs text-muted-foreground">{finding.ruleId}</p>
                         </button>
                       </td>
-                      <td className="px-5 py-4"><SeverityBadge severity={finding.severity} /></td>
                       <td className="px-5 py-4">
-                        <p className="font-medium">{finding.cloudResource?.name || "Unknown resource"}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{finding.cloudResource?.resourceType?.replaceAll("_", " ") || "—"}</p>
-                      </td>
-                      <td className="px-5 py-4">
-                        <span className={`rounded-md px-2 py-1 text-xs font-medium ${providerClass(finding.cloudResource?.provider)}`}>
-                          {providerLabel(finding.cloudResource?.provider)}
-                        </span>
-                      </td>
+  <SeverityBadge severity={finding.severity} />
+</td>
+
+<td className="px-5 py-4">
+  {finding.cloudResource ? (
+    <div>
+      <p className="font-medium">{finding.cloudResource.name}</p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Resource · {finding.cloudResource.resourceType.replaceAll("_", " ")}
+      </p>
+    </div>
+  ) : finding.cloudIdentity ? (
+    <div>
+      <p className="font-medium">{finding.cloudIdentity.displayName}</p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Identity · {finding.cloudIdentity.identityType.replaceAll("_", " ")}
+      </p>
+    </div>
+  ) : (
+    <span className="text-muted-foreground">Unknown target</span>
+  )}
+</td>
+
+<td className="px-5 py-4">
+  <span
+    className={`rounded-md px-2 py-1 text-xs font-medium ${providerClass(
+      finding.cloudResource?.provider ?? finding.cloudIdentity?.cloudAccount?.provider
+    )}`}
+  >
+    {providerLabel(
+      finding.cloudResource?.provider ?? finding.cloudIdentity?.cloudAccount?.provider
+    )}
+  </span>
+</td>
                       <td className="px-5 py-4"><StatusBadge status={finding.status} /></td>
                       <td className="px-5 py-4 text-xs text-muted-foreground">{formatDate(finding.lastDetectedAt)}</td>
                       <td className="px-5 py-4 text-right">
@@ -1049,55 +1105,94 @@ function FindingDetails({
             )}
           </div>
 
-          {/* Affected resource */}
-          <div>
-            <h3 className="text-sm font-semibold">Affected resource</h3>
+          {/* Affected target */}
+<div>
+  <h3 className="text-sm font-semibold">Affected target</h3>
 
-            <div className="mt-3 rounded-xl border border-border p-4">
-              <p className="font-medium">
-                {resource?.name || "Unknown resource"}
-              </p>
+  <div className="mt-3 rounded-xl border border-border p-4">
+    {resource ? (
+      <>
+        <p className="font-medium">{resource.name}</p>
 
-              <p className="mt-1 text-xs text-muted-foreground">
-                {resource?.resourceType?.replaceAll("_", " ") || "—"}
-              </p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Resource · {resource.resourceType.replaceAll("_", " ")}
+        </p>
 
-              <div className="mt-4 grid gap-3">
-                <Info
-                  label="Provider"
-                  value={providerLabel(resource?.provider)}
-                />
-                <Info
-                  label="Region"
-                  value={resource?.region || "Not specified"}
-                />
-                <Info
-                  label="Cloud account"
-                  value={
-                    resource?.cloudAccount?.name ||
-                    resource?.cloudAccountId ||
-                    "—"
-                  }
-                />
-                <Info
-                  label="Environment"
-                  value={resource?.cloudAccount?.environment || "—"}
-                />
-                <Info label="Discovery source" value={source} />
-              </div>
+        <div className="mt-4 grid gap-3">
+          <Info label="Provider" value={providerLabel(resource.provider)} />
+          <Info label="Region" value={resource.region || "Not specified"} />
+          <Info
+            label="Cloud account"
+            value={resource.cloudAccount?.name || resource.cloudAccountId || "—"}
+          />
+          <Info
+            label="Environment"
+            value={resource.cloudAccount?.environment || "—"}
+          />
+          <Info label="Discovery source" value={source} />
+        </div>
 
-              {resource?.providerResourceId && (
-                <div className="mt-4 border-t border-border pt-3">
-                  <p className="text-[11px] text-muted-foreground">
-                    Provider resource ID
-                  </p>
-                  <p className="mt-1 break-all font-mono text-[11px] leading-5">
-                    {resource.providerResourceId}
-                  </p>
-                </div>
-              )}
-            </div>
+        {resource.providerResourceId && (
+          <div className="mt-4 border-t border-border pt-3">
+            <p className="text-[11px] text-muted-foreground">
+              Provider resource ID
+            </p>
+            <p className="mt-1 break-all font-mono text-[11px] leading-5">
+              {resource.providerResourceId}
+            </p>
           </div>
+        )}
+      </>
+    ) : finding.cloudIdentity ? (
+      <>
+        <p className="font-medium">{finding.cloudIdentity.displayName}</p>
+
+        <p className="mt-1 text-xs text-muted-foreground">
+          Identity · {finding.cloudIdentity.identityType.replaceAll("_", " ")}
+        </p>
+
+        <div className="mt-4 grid gap-3">
+          <Info
+            label="Provider"
+            value={providerLabel(finding.cloudIdentity.cloudAccount?.provider)}
+          />
+          <Info
+            label="Email / Principal"
+            value={finding.cloudIdentity.userPrincipalName || "Not specified"}
+          />
+          <Info
+            label="Identity status"
+            value={finding.cloudIdentity.isEnabled ? "Enabled" : "Disabled"}
+          />
+          <Info
+            label="Cloud account"
+            value={
+              finding.cloudIdentity.cloudAccount?.name ||
+              finding.cloudIdentity.cloudAccountId ||
+              "—"
+            }
+          />
+          <Info
+            label="Environment"
+            value={finding.cloudIdentity.cloudAccount?.environment || "—"}
+          />
+          <Info label="Discovery source" value={source} />
+        </div>
+
+        <div className="mt-4 border-t border-border pt-3">
+          <p className="text-[11px] text-muted-foreground">
+            Provider identity ID
+          </p>
+          <p className="mt-1 break-all font-mono text-[11px] leading-5">
+            {finding.cloudIdentity.providerIdentityId}
+          </p>
+        </div>
+      </>
+    ) : (
+      <p className="text-sm text-muted-foreground">Unknown affected target</p>
+    )}
+  </div>
+</div>
 
           {/* Detection timeline */}
           <div>

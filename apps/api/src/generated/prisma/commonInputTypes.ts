@@ -174,6 +174,23 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
 }
 
+export type EnumCloudIdentityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.CloudIdentityType | Prisma.EnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCloudIdentityTypeFilter<$PrismaModel> | $Enums.CloudIdentityType
+}
+
+export type EnumCloudIdentityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CloudIdentityType | Prisma.EnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCloudIdentityTypeWithAggregatesFilter<$PrismaModel> | $Enums.CloudIdentityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCloudIdentityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCloudIdentityTypeFilter<$PrismaModel>
+}
+
 export type EnumSecuritySeverityFilter<$PrismaModel = never> = {
   equals?: $Enums.SecuritySeverity | Prisma.EnumSecuritySeverityFieldRefInput<$PrismaModel>
   in?: $Enums.SecuritySeverity[] | Prisma.ListEnumSecuritySeverityFieldRefInput<$PrismaModel>
@@ -411,6 +428,23 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumCloudIdentityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.CloudIdentityType | Prisma.EnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCloudIdentityTypeFilter<$PrismaModel> | $Enums.CloudIdentityType
+}
+
+export type NestedEnumCloudIdentityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CloudIdentityType | Prisma.EnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CloudIdentityType[] | Prisma.ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCloudIdentityTypeWithAggregatesFilter<$PrismaModel> | $Enums.CloudIdentityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCloudIdentityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCloudIdentityTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumSecuritySeverityFilter<$PrismaModel = never> = {

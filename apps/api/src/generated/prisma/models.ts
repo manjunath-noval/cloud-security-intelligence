@@ -10,6 +10,9 @@
  */
 export type * from './models/CloudAccount.js'
 export type * from './models/CloudResource.js'
+export type * from './models/CloudIdentity.js'
+export type * from './models/CloudRoleDefinition.js'
+export type * from './models/CloudRoleAssignment.js'
 export type * from './models/SecurityFinding.js'
 export type * from './models/SecurityFindingEvent.js'
 export type * from './commonInputTypes.js'

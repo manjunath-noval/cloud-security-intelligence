@@ -399,6 +399,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   CloudAccount: 'CloudAccount',
   CloudResource: 'CloudResource',
+  CloudIdentity: 'CloudIdentity',
+  CloudRoleDefinition: 'CloudRoleDefinition',
+  CloudRoleAssignment: 'CloudRoleAssignment',
   SecurityFinding: 'SecurityFinding',
   SecurityFindingEvent: 'SecurityFindingEvent'
 } as const
@@ -416,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cloudAccount" | "cloudResource" | "securityFinding" | "securityFindingEvent"
+    modelProps: "cloudAccount" | "cloudResource" | "cloudIdentity" | "cloudRoleDefinition" | "cloudRoleAssignment" | "securityFinding" | "securityFindingEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -565,6 +568,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CloudResourceCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CloudResourceCountAggregateOutputType> | number
+        }
+      }
+    }
+    CloudIdentity: {
+      payload: Prisma.$CloudIdentityPayload<ExtArgs>
+      fields: Prisma.CloudIdentityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CloudIdentityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CloudIdentityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>
+        }
+        findFirst: {
+          args: Prisma.CloudIdentityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CloudIdentityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>
+        }
+        findMany: {
+          args: Prisma.CloudIdentityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>[]
+        }
+        create: {
+          args: Prisma.CloudIdentityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>
+        }
+        createMany: {
+          args: Prisma.CloudIdentityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CloudIdentityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>[]
+        }
+        delete: {
+          args: Prisma.CloudIdentityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>
+        }
+        update: {
+          args: Prisma.CloudIdentityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>
+        }
+        deleteMany: {
+          args: Prisma.CloudIdentityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CloudIdentityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CloudIdentityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>[]
+        }
+        upsert: {
+          args: Prisma.CloudIdentityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudIdentityPayload>
+        }
+        aggregate: {
+          args: Prisma.CloudIdentityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCloudIdentity>
+        }
+        groupBy: {
+          args: Prisma.CloudIdentityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudIdentityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CloudIdentityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudIdentityCountAggregateOutputType> | number
+        }
+      }
+    }
+    CloudRoleDefinition: {
+      payload: Prisma.$CloudRoleDefinitionPayload<ExtArgs>
+      fields: Prisma.CloudRoleDefinitionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CloudRoleDefinitionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CloudRoleDefinitionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>
+        }
+        findFirst: {
+          args: Prisma.CloudRoleDefinitionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CloudRoleDefinitionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>
+        }
+        findMany: {
+          args: Prisma.CloudRoleDefinitionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>[]
+        }
+        create: {
+          args: Prisma.CloudRoleDefinitionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>
+        }
+        createMany: {
+          args: Prisma.CloudRoleDefinitionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CloudRoleDefinitionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>[]
+        }
+        delete: {
+          args: Prisma.CloudRoleDefinitionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>
+        }
+        update: {
+          args: Prisma.CloudRoleDefinitionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CloudRoleDefinitionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CloudRoleDefinitionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CloudRoleDefinitionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CloudRoleDefinitionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleDefinitionPayload>
+        }
+        aggregate: {
+          args: Prisma.CloudRoleDefinitionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCloudRoleDefinition>
+        }
+        groupBy: {
+          args: Prisma.CloudRoleDefinitionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudRoleDefinitionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CloudRoleDefinitionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudRoleDefinitionCountAggregateOutputType> | number
+        }
+      }
+    }
+    CloudRoleAssignment: {
+      payload: Prisma.$CloudRoleAssignmentPayload<ExtArgs>
+      fields: Prisma.CloudRoleAssignmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CloudRoleAssignmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CloudRoleAssignmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>
+        }
+        findFirst: {
+          args: Prisma.CloudRoleAssignmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CloudRoleAssignmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>
+        }
+        findMany: {
+          args: Prisma.CloudRoleAssignmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>[]
+        }
+        create: {
+          args: Prisma.CloudRoleAssignmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>
+        }
+        createMany: {
+          args: Prisma.CloudRoleAssignmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CloudRoleAssignmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>[]
+        }
+        delete: {
+          args: Prisma.CloudRoleAssignmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>
+        }
+        update: {
+          args: Prisma.CloudRoleAssignmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.CloudRoleAssignmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CloudRoleAssignmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CloudRoleAssignmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.CloudRoleAssignmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloudRoleAssignmentPayload>
+        }
+        aggregate: {
+          args: Prisma.CloudRoleAssignmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCloudRoleAssignment>
+        }
+        groupBy: {
+          args: Prisma.CloudRoleAssignmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudRoleAssignmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CloudRoleAssignmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloudRoleAssignmentCountAggregateOutputType> | number
         }
       }
     }
@@ -787,9 +1012,61 @@ export const CloudResourceScalarFieldEnum = {
 export type CloudResourceScalarFieldEnum = (typeof CloudResourceScalarFieldEnum)[keyof typeof CloudResourceScalarFieldEnum]
 
 
+export const CloudIdentityScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerIdentityId: 'providerIdentityId',
+  displayName: 'displayName',
+  identityType: 'identityType',
+  userPrincipalName: 'userPrincipalName',
+  isEnabled: 'isEnabled',
+  metadata: 'metadata',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudIdentityScalarFieldEnum = (typeof CloudIdentityScalarFieldEnum)[keyof typeof CloudIdentityScalarFieldEnum]
+
+
+export const CloudRoleDefinitionScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerRoleDefinitionId: 'providerRoleDefinitionId',
+  name: 'name',
+  description: 'description',
+  isBuiltIn: 'isBuiltIn',
+  permissions: 'permissions',
+  assignableScopes: 'assignableScopes',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudRoleDefinitionScalarFieldEnum = (typeof CloudRoleDefinitionScalarFieldEnum)[keyof typeof CloudRoleDefinitionScalarFieldEnum]
+
+
+export const CloudRoleAssignmentScalarFieldEnum = {
+  id: 'id',
+  cloudAccountId: 'cloudAccountId',
+  providerAssignmentId: 'providerAssignmentId',
+  cloudIdentityId: 'cloudIdentityId',
+  cloudRoleDefinitionId: 'cloudRoleDefinitionId',
+  scope: 'scope',
+  condition: 'condition',
+  conditionVersion: 'conditionVersion',
+  discoverySource: 'discoverySource',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CloudRoleAssignmentScalarFieldEnum = (typeof CloudRoleAssignmentScalarFieldEnum)[keyof typeof CloudRoleAssignmentScalarFieldEnum]
+
+
 export const SecurityFindingScalarFieldEnum = {
   id: 'id',
   cloudResourceId: 'cloudResourceId',
+  cloudIdentityId: 'cloudIdentityId',
   ruleId: 'ruleId',
   title: 'title',
   description: 'description',
@@ -916,6 +1193,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'CloudIdentityType'
+ */
+export type EnumCloudIdentityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CloudIdentityType'>
+    
+
+
+/**
+ * Reference to a field of type 'CloudIdentityType[]'
+ */
+export type ListEnumCloudIdentityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CloudIdentityType[]'>
     
 
 
@@ -1127,6 +1418,9 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   cloudAccount?: Prisma.CloudAccountOmit
   cloudResource?: Prisma.CloudResourceOmit
+  cloudIdentity?: Prisma.CloudIdentityOmit
+  cloudRoleDefinition?: Prisma.CloudRoleDefinitionOmit
+  cloudRoleAssignment?: Prisma.CloudRoleAssignmentOmit
   securityFinding?: Prisma.SecurityFindingOmit
   securityFindingEvent?: Prisma.SecurityFindingEventOmit
 }

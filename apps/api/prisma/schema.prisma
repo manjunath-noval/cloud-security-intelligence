@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -21,31 +20,41 @@ enum FindingStatus {
   ACKNOWLEDGED
   RESOLVED
 }
+
 enum SecurityFindingActorType {
   USER
   SYSTEM
 }
 
-model CloudAccount {
-  id          String   @id @default(uuid())
-  name        String
-  provider    String
-  accountId   String
-  environment String   @default("development")
-  region      String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+enum CloudIdentityType {
+  USER
+  GROUP
+  SERVICE_PRINCIPAL
+  MANAGED_IDENTITY
+}
 
-  resources   CloudResource[]
+model CloudAccount {
+  id              String                @id @default(uuid())
+  name            String
+  provider        String
+  accountId       String
+  environment     String                @default("development")
+  region          String?
+  isActive        Boolean               @default(true)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  identities      CloudIdentity[]
+  roleDefinitions CloudRoleDefinition[]
+  roleAssignments CloudRoleAssignment[]
+
+  resources CloudResource[]
 
   @@index([provider, accountId])
 }
 
-
 model CloudResource {
-  id                 String   @id @default(uuid())
-  cloudAccountId     String
+  id             String @id @default(uuid())
+  cloudAccountId String
 
   providerResourceId String
   name               String
@@ -53,14 +62,14 @@ model CloudResource {
   provider           String
   region             String?
 
-  metadata           Json     @default("{}")
-  discoverySource    String   @default("SIMULATED")
+  metadata        Json   @default("{}")
+  discoverySource String @default("SIMULATED")
 
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  cloudAccount       CloudAccount @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
-  findings           SecurityFinding[]
+  cloudAccount CloudAccount      @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
+  findings     SecurityFinding[]
 
   @@unique([cloudAccountId, providerResourceId])
   @@index([cloudAccountId])
@@ -69,49 +78,120 @@ model CloudResource {
   @@index([discoverySource])
 }
 
+model CloudIdentity {
+  id                 String            @id @default(uuid())
+  cloudAccountId     String
+  providerIdentityId String
+  displayName        String
+  identityType       CloudIdentityType
+  userPrincipalName  String?
+  isEnabled          Boolean           @default(true)
+  metadata           Json              @default("{}")
+  discoverySource    String            @default("SIMULATED")
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  cloudAccount    CloudAccount          @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
+  roleAssignments CloudRoleAssignment[]
+  findings        SecurityFinding[]
+
+  @@unique([cloudAccountId, providerIdentityId])
+  @@index([cloudAccountId])
+  @@index([identityType])
+  @@index([isEnabled])
+}
+
+model CloudRoleDefinition {
+  id                       String   @id @default(uuid())
+  cloudAccountId           String
+  providerRoleDefinitionId String
+  name                     String
+  description              String?
+  isBuiltIn                Boolean  @default(true)
+  permissions              Json     @default("{}")
+  assignableScopes         Json     @default("[]")
+  discoverySource          String   @default("SIMULATED")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  cloudAccount    CloudAccount          @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
+  roleAssignments CloudRoleAssignment[]
+
+  @@unique([cloudAccountId, providerRoleDefinitionId])
+  @@index([cloudAccountId])
+  @@index([name])
+}
+
+model CloudRoleAssignment {
+  id                    String   @id @default(uuid())
+  cloudAccountId        String
+  providerAssignmentId  String
+  cloudIdentityId       String
+  cloudRoleDefinitionId String
+  scope                 String
+  condition             String?
+  conditionVersion      String?
+  discoverySource       String   @default("SIMULATED")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  cloudAccount        CloudAccount        @relation(fields: [cloudAccountId], references: [id], onDelete: Cascade)
+  cloudIdentity       CloudIdentity       @relation(fields: [cloudIdentityId], references: [id], onDelete: Cascade)
+  cloudRoleDefinition CloudRoleDefinition @relation(fields: [cloudRoleDefinitionId], references: [id], onDelete: Cascade)
+
+  @@unique([cloudAccountId, providerAssignmentId])
+  @@index([cloudAccountId])
+  @@index([cloudIdentityId])
+  @@index([cloudRoleDefinitionId])
+  @@index([scope])
+}
 
 model SecurityFinding {
-  id             String           @id @default(uuid())
-  cloudResourceId String
+  id              String           @id @default(uuid())
+  cloudResourceId String?
+  cloudIdentityId String?
+  ruleId          String
+  title           String
+  description     String
+  severity        SecuritySeverity
+  status          FindingStatus    @default(OPEN)
 
-  ruleId         String
-  title          String
-  description    String
-  severity       SecuritySeverity
-  status         FindingStatus    @default(OPEN)
+  evidence    Json   @default("{}")
+  remediation String
 
-  evidence       Json             @default("{}")
-  remediation    String
-
-  firstDetectedAt DateTime        @default(now())
-  lastDetectedAt  DateTime        @default(now())
+  firstDetectedAt DateTime  @default(now())
+  lastDetectedAt  DateTime  @default(now())
   resolvedAt      DateTime?
 
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   acknowledgedAt DateTime?
   resolutionNote String?
-  events         SecurityFindingEvent[]     
+  events         SecurityFindingEvent[]
 
-  cloudResource  CloudResource    @relation(fields: [cloudResourceId], references: [id], onDelete: Cascade)
+  cloudResource CloudResource? @relation(fields: [cloudResourceId], references: [id], onDelete: Cascade)
+  cloudIdentity CloudIdentity? @relation(fields: [cloudIdentityId], references: [id], onDelete: Cascade)
 
   @@unique([cloudResourceId, ruleId])
+  @@unique([cloudIdentityId, ruleId])
+  @@index([cloudIdentityId])
   @@index([severity, status])
   @@index([cloudResourceId])
   @@index([ruleId])
   @@index([status])
 }
+
 model SecurityFindingEvent {
-  id             String                   @id @default(uuid())
-  findingId      String
-  eventType      String
-  fromStatus     FindingStatus?
-  toStatus       FindingStatus?
-  note           String?
-  actorType      SecurityFindingActorType @default(USER)
-  actorId        String?
-  createdAt      DateTime                 @default(now())
+  id         String                   @id @default(uuid())
+  findingId  String
+  eventType  String
+  fromStatus FindingStatus?
+  toStatus   FindingStatus?
+  note       String?
+  actorType  SecurityFindingActorType @default(USER)
+  actorId    String?
+  createdAt  DateTime                 @default(now())
 
   finding SecurityFinding @relation(fields: [findingId], references: [id], onDelete: Cascade)
 

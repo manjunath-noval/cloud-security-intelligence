@@ -35,3 +35,13 @@ export const SecurityFindingActorType = {
 } as const
 
 export type SecurityFindingActorType = (typeof SecurityFindingActorType)[keyof typeof SecurityFindingActorType]
+
+
+export const CloudIdentityType = {
+  USER: 'USER',
+  GROUP: 'GROUP',
+  SERVICE_PRINCIPAL: 'SERVICE_PRINCIPAL',
+  MANAGED_IDENTITY: 'MANAGED_IDENTITY'
+} as const
+
+export type CloudIdentityType = (typeof CloudIdentityType)[keyof typeof CloudIdentityType]

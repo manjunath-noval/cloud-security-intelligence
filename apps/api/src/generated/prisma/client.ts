@@ -52,6 +52,21 @@ export type CloudAccount = Prisma.CloudAccountModel
  */
 export type CloudResource = Prisma.CloudResourceModel
 /**
+ * Model CloudIdentity
+ * 
+ */
+export type CloudIdentity = Prisma.CloudIdentityModel
+/**
+ * Model CloudRoleDefinition
+ * 
+ */
+export type CloudRoleDefinition = Prisma.CloudRoleDefinitionModel
+/**
+ * Model CloudRoleAssignment
+ * 
+ */
+export type CloudRoleAssignment = Prisma.CloudRoleAssignmentModel
+/**
  * Model SecurityFinding
  * 
  */

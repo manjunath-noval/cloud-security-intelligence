@@ -456,9 +456,9 @@ export type CloudResourceMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type CloudResourceScalarRelationFilter = {
-  is?: Prisma.CloudResourceWhereInput
-  isNot?: Prisma.CloudResourceWhereInput
+export type CloudResourceNullableScalarRelationFilter = {
+  is?: Prisma.CloudResourceWhereInput | null
+  isNot?: Prisma.CloudResourceWhereInput | null
 }
 
 export type CloudResourceCreateNestedManyWithoutCloudAccountInput = {
@@ -509,10 +509,12 @@ export type CloudResourceCreateNestedOneWithoutFindingsInput = {
   connect?: Prisma.CloudResourceWhereUniqueInput
 }
 
-export type CloudResourceUpdateOneRequiredWithoutFindingsNestedInput = {
+export type CloudResourceUpdateOneWithoutFindingsNestedInput = {
   create?: Prisma.XOR<Prisma.CloudResourceCreateWithoutFindingsInput, Prisma.CloudResourceUncheckedCreateWithoutFindingsInput>
   connectOrCreate?: Prisma.CloudResourceCreateOrConnectWithoutFindingsInput
   upsert?: Prisma.CloudResourceUpsertWithoutFindingsInput
+  disconnect?: Prisma.CloudResourceWhereInput | boolean
+  delete?: Prisma.CloudResourceWhereInput | boolean
   connect?: Prisma.CloudResourceWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CloudResourceUpdateToOneWithWhereWithoutFindingsInput, Prisma.CloudResourceUpdateWithoutFindingsInput>, Prisma.CloudResourceUncheckedUpdateWithoutFindingsInput>
 }

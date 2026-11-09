@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import resourcesRouter from "./routes/resources.js";
 import cloudAccountsRouter from "./routes/cloudAccounts.js";
 import securityRouter from "./routes/security.js";
+import iamRouter from "./routes/iam.js";
 dotenv.config({ path: "../../.env" });
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/resources", resourcesRouter);
 app.use("/api/cloud-accounts", cloudAccountsRouter);
 app.use("/api/security", securityRouter);
+app.use("/api/iam", iamRouter);
 
 app.get("/health", (_req, res) => {
   res.status(200).json({
