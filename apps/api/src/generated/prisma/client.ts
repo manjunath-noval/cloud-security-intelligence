@@ -56,3 +56,8 @@ export type CloudResource = Prisma.CloudResourceModel
  * 
  */
 export type SecurityFinding = Prisma.SecurityFindingModel
+/**
+ * Model SecurityFindingEvent
+ * 
+ */
+export type SecurityFindingEvent = Prisma.SecurityFindingEventModel

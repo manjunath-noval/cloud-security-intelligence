@@ -21,7 +21,10 @@ enum FindingStatus {
   ACKNOWLEDGED
   RESOLVED
 }
-
+enum SecurityFindingActorType {
+  USER
+  SYSTEM
+}
 
 model CloudAccount {
   id          String   @id @default(uuid())
@@ -87,6 +90,10 @@ model SecurityFinding {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
+  acknowledgedAt DateTime?
+  resolutionNote String?
+  events         SecurityFindingEvent[]     
+
   cloudResource  CloudResource    @relation(fields: [cloudResourceId], references: [id], onDelete: Cascade)
 
   @@unique([cloudResourceId, ruleId])
@@ -94,4 +101,21 @@ model SecurityFinding {
   @@index([cloudResourceId])
   @@index([ruleId])
   @@index([status])
+}
+model SecurityFindingEvent {
+  id             String                   @id @default(uuid())
+  findingId      String
+  eventType      String
+  fromStatus     FindingStatus?
+  toStatus       FindingStatus?
+  note           String?
+  actorType      SecurityFindingActorType @default(USER)
+  actorId        String?
+  createdAt      DateTime                 @default(now())
+
+  finding SecurityFinding @relation(fields: [findingId], references: [id], onDelete: Cascade)
+
+  @@index([findingId, createdAt])
+  @@index([eventType])
+  @@index([actorId])
 }

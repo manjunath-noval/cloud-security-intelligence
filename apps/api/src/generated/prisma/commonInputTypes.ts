@@ -233,6 +233,40 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type EnumFindingStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.FindingStatus | Prisma.EnumFindingStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumFindingStatusNullableFilter<$PrismaModel> | $Enums.FindingStatus | null
+}
+
+export type EnumSecurityFindingActorTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SecurityFindingActorType | Prisma.EnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSecurityFindingActorTypeFilter<$PrismaModel> | $Enums.SecurityFindingActorType
+}
+
+export type EnumFindingStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FindingStatus | Prisma.EnumFindingStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumFindingStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.FindingStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFindingStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFindingStatusNullableFilter<$PrismaModel>
+}
+
+export type EnumSecurityFindingActorTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SecurityFindingActorType | Prisma.EnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSecurityFindingActorTypeWithAggregatesFilter<$PrismaModel> | $Enums.SecurityFindingActorType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSecurityFindingActorTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSecurityFindingActorTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -436,6 +470,40 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumFindingStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.FindingStatus | Prisma.EnumFindingStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumFindingStatusNullableFilter<$PrismaModel> | $Enums.FindingStatus | null
+}
+
+export type NestedEnumSecurityFindingActorTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SecurityFindingActorType | Prisma.EnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSecurityFindingActorTypeFilter<$PrismaModel> | $Enums.SecurityFindingActorType
+}
+
+export type NestedEnumFindingStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FindingStatus | Prisma.EnumFindingStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.FindingStatus[] | Prisma.ListEnumFindingStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumFindingStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.FindingStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFindingStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFindingStatusNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumSecurityFindingActorTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SecurityFindingActorType | Prisma.EnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SecurityFindingActorType[] | Prisma.ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSecurityFindingActorTypeWithAggregatesFilter<$PrismaModel> | $Enums.SecurityFindingActorType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSecurityFindingActorTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSecurityFindingActorTypeFilter<$PrismaModel>
 }
 
 

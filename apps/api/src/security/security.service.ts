@@ -1,4 +1,3 @@
-
 import { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../db.js";
 import {
@@ -12,6 +11,7 @@ type DetectionResult = {
   resourcesScanned: number;
   findingsCreated: number;
   findingsUpdated: number;
+  findingsReopened: number;
   findings: SecurityDetection[];
 };
 
@@ -59,6 +59,7 @@ export async function scanCloudAccount(
 
   let findingsCreated = 0;
   let findingsUpdated = 0;
+  let findingsReopened = 0;
 
   await prisma.$transaction(async (transaction) => {
     for (const item of allDetections) {
@@ -71,10 +72,17 @@ export async function scanCloudAccount(
             ruleId: detection.ruleId,
           },
         },
-        select: { id: true },
+        select: {
+          id: true,
+          status: true,
+        },
       });
 
-      await transaction.securityFinding.upsert({
+      const now = new Date();
+      const isNew = !existing;
+      const shouldReopen = existing?.status === "RESOLVED";
+
+      const finding = await transaction.securityFinding.upsert({
         where: {
           cloudResourceId_ruleId: {
             cloudResourceId,
@@ -96,14 +104,49 @@ export async function scanCloudAccount(
           severity: detection.severity,
           evidence: detection.evidence as Prisma.InputJsonValue,
           remediation: detection.remediation,
-          lastDetectedAt: new Date(),
+          lastDetectedAt: now,
+
+          ...(shouldReopen
+            ? {
+                status: "OPEN" as const,
+                resolvedAt: null,
+                resolutionNote: null,
+                acknowledgedAt: null,
+              }
+            : {}),
         },
       });
 
-      if (existing) {
-        findingsUpdated++;
-      } else {
+      if (isNew) {
         findingsCreated++;
+
+        await transaction.securityFindingEvent.create({
+          data: {
+            findingId: finding.id,
+            eventType: "DETECTED",
+            fromStatus: null,
+            toStatus: "OPEN",
+            note: "Security finding detected by the automated scanning engine.",
+            actorType: "SYSTEM",
+          },
+        });
+      } else {
+        findingsUpdated++;
+
+        if (shouldReopen) {
+          findingsReopened++;
+
+          await transaction.securityFindingEvent.create({
+            data: {
+              findingId: finding.id,
+              eventType: "REOPENED",
+              fromStatus: "RESOLVED",
+              toStatus: "OPEN",
+              note: "Previously resolved security finding was detected again during a scan.",
+              actorType: "SYSTEM",
+            },
+          });
+        }
       }
     }
   });
@@ -114,6 +157,7 @@ export async function scanCloudAccount(
     resourcesScanned: account.resources.length,
     findingsCreated,
     findingsUpdated,
+    findingsReopened,
     findings: allDetections.map((item) => item.detection),
   };
 }

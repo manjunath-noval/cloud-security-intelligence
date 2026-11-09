@@ -27,3 +27,11 @@ export const FindingStatus = {
 } as const
 
 export type FindingStatus = (typeof FindingStatus)[keyof typeof FindingStatus]
+
+
+export const SecurityFindingActorType = {
+  USER: 'USER',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type SecurityFindingActorType = (typeof SecurityFindingActorType)[keyof typeof SecurityFindingActorType]

@@ -399,7 +399,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   CloudAccount: 'CloudAccount',
   CloudResource: 'CloudResource',
-  SecurityFinding: 'SecurityFinding'
+  SecurityFinding: 'SecurityFinding',
+  SecurityFindingEvent: 'SecurityFindingEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cloudAccount" | "cloudResource" | "securityFinding"
+    modelProps: "cloudAccount" | "cloudResource" | "securityFinding" | "securityFindingEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -641,6 +642,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SecurityFindingEvent: {
+      payload: Prisma.$SecurityFindingEventPayload<ExtArgs>
+      fields: Prisma.SecurityFindingEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SecurityFindingEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SecurityFindingEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>
+        }
+        findFirst: {
+          args: Prisma.SecurityFindingEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SecurityFindingEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>
+        }
+        findMany: {
+          args: Prisma.SecurityFindingEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>[]
+        }
+        create: {
+          args: Prisma.SecurityFindingEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>
+        }
+        createMany: {
+          args: Prisma.SecurityFindingEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SecurityFindingEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>[]
+        }
+        delete: {
+          args: Prisma.SecurityFindingEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>
+        }
+        update: {
+          args: Prisma.SecurityFindingEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.SecurityFindingEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SecurityFindingEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SecurityFindingEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.SecurityFindingEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingEventPayload>
+        }
+        aggregate: {
+          args: Prisma.SecurityFindingEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSecurityFindingEvent>
+        }
+        groupBy: {
+          args: Prisma.SecurityFindingEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SecurityFindingEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SecurityFindingEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SecurityFindingEventCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -726,10 +801,27 @@ export const SecurityFindingScalarFieldEnum = {
   lastDetectedAt: 'lastDetectedAt',
   resolvedAt: 'resolvedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  acknowledgedAt: 'acknowledgedAt',
+  resolutionNote: 'resolutionNote'
 } as const
 
 export type SecurityFindingScalarFieldEnum = (typeof SecurityFindingScalarFieldEnum)[keyof typeof SecurityFindingScalarFieldEnum]
+
+
+export const SecurityFindingEventScalarFieldEnum = {
+  id: 'id',
+  findingId: 'findingId',
+  eventType: 'eventType',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  note: 'note',
+  actorType: 'actorType',
+  actorId: 'actorId',
+  createdAt: 'createdAt'
+} as const
+
+export type SecurityFindingEventScalarFieldEnum = (typeof SecurityFindingEventScalarFieldEnum)[keyof typeof SecurityFindingEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -852,6 +944,20 @@ export type EnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'FindingStatus[]'
  */
 export type ListEnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SecurityFindingActorType'
+ */
+export type EnumSecurityFindingActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecurityFindingActorType'>
+    
+
+
+/**
+ * Reference to a field of type 'SecurityFindingActorType[]'
+ */
+export type ListEnumSecurityFindingActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecurityFindingActorType[]'>
     
 
 
@@ -1022,6 +1128,7 @@ export type GlobalOmitConfig = {
   cloudAccount?: Prisma.CloudAccountOmit
   cloudResource?: Prisma.CloudResourceOmit
   securityFinding?: Prisma.SecurityFindingOmit
+  securityFindingEvent?: Prisma.SecurityFindingEventOmit
 }
 
 /* Types for Logging */

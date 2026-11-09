@@ -48,7 +48,6 @@ export const navigationGroups: NavigationGroup[] = [
         title: "Resource Inventory",
         href: "/resources",
         icon: Boxes,
-        disabled: true,
       },
     ],
   },
@@ -57,9 +56,8 @@ export const navigationGroups: NavigationGroup[] = [
     items: [
       {
         title: "Security Findings",
-        href: "/findings",
+        href: "/security/findings",
         icon: ShieldAlert,
-        disabled: true,
       },
       {
         title: "IAM Intelligence",

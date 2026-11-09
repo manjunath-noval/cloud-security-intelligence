@@ -38,6 +38,8 @@ export type SecurityFindingMinAggregateOutputType = {
   resolvedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  acknowledgedAt: Date | null
+  resolutionNote: string | null
 }
 
 export type SecurityFindingMaxAggregateOutputType = {
@@ -54,6 +56,8 @@ export type SecurityFindingMaxAggregateOutputType = {
   resolvedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  acknowledgedAt: Date | null
+  resolutionNote: string | null
 }
 
 export type SecurityFindingCountAggregateOutputType = {
@@ -71,6 +75,8 @@ export type SecurityFindingCountAggregateOutputType = {
   resolvedAt: number
   createdAt: number
   updatedAt: number
+  acknowledgedAt: number
+  resolutionNote: number
   _all: number
 }
 
@@ -89,6 +95,8 @@ export type SecurityFindingMinAggregateInputType = {
   resolvedAt?: true
   createdAt?: true
   updatedAt?: true
+  acknowledgedAt?: true
+  resolutionNote?: true
 }
 
 export type SecurityFindingMaxAggregateInputType = {
@@ -105,6 +113,8 @@ export type SecurityFindingMaxAggregateInputType = {
   resolvedAt?: true
   createdAt?: true
   updatedAt?: true
+  acknowledgedAt?: true
+  resolutionNote?: true
 }
 
 export type SecurityFindingCountAggregateInputType = {
@@ -122,6 +132,8 @@ export type SecurityFindingCountAggregateInputType = {
   resolvedAt?: true
   createdAt?: true
   updatedAt?: true
+  acknowledgedAt?: true
+  resolutionNote?: true
   _all?: true
 }
 
@@ -212,6 +224,8 @@ export type SecurityFindingGroupByOutputType = {
   resolvedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  acknowledgedAt: Date | null
+  resolutionNote: string | null
   _count: SecurityFindingCountAggregateOutputType | null
   _min: SecurityFindingMinAggregateOutputType | null
   _max: SecurityFindingMaxAggregateOutputType | null
@@ -250,6 +264,9 @@ export type SecurityFindingWhereInput = {
   resolvedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
+  acknowledgedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
+  resolutionNote?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+  events?: Prisma.SecurityFindingEventListRelationFilter
   cloudResource?: Prisma.XOR<Prisma.CloudResourceScalarRelationFilter, Prisma.CloudResourceWhereInput>
 }
 
@@ -268,6 +285,9 @@ export type SecurityFindingOrderByWithRelationInput = {
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  resolutionNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  events?: Prisma.SecurityFindingEventOrderByRelationAggregateInput
   cloudResource?: Prisma.CloudResourceOrderByWithRelationInput
 }
 
@@ -290,6 +310,9 @@ export type SecurityFindingWhereUniqueInput = Prisma.AtLeast<{
   resolvedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
+  acknowledgedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
+  resolutionNote?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+  events?: Prisma.SecurityFindingEventListRelationFilter
   cloudResource?: Prisma.XOR<Prisma.CloudResourceScalarRelationFilter, Prisma.CloudResourceWhereInput>
 }, "id" | "cloudResourceId_ruleId">
 
@@ -308,6 +331,8 @@ export type SecurityFindingOrderByWithAggregationInput = {
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  resolutionNote?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SecurityFindingCountOrderByAggregateInput
   _max?: Prisma.SecurityFindingMaxOrderByAggregateInput
   _min?: Prisma.SecurityFindingMinOrderByAggregateInput
@@ -331,6 +356,8 @@ export type SecurityFindingScalarWhereWithAggregatesInput = {
   resolvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SecurityFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SecurityFinding"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SecurityFinding"> | Date | string
+  acknowledgedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SecurityFinding"> | Date | string | null
+  resolutionNote?: Prisma.StringNullableWithAggregatesFilter<"SecurityFinding"> | string | null
 }
 
 export type SecurityFindingCreateInput = {
@@ -347,6 +374,9 @@ export type SecurityFindingCreateInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  events?: Prisma.SecurityFindingEventCreateNestedManyWithoutFindingInput
   cloudResource: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
 }
 
@@ -365,6 +395,9 @@ export type SecurityFindingUncheckedCreateInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  events?: Prisma.SecurityFindingEventUncheckedCreateNestedManyWithoutFindingInput
 }
 
 export type SecurityFindingUpdateInput = {
@@ -381,6 +414,9 @@ export type SecurityFindingUpdateInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.SecurityFindingEventUpdateManyWithoutFindingNestedInput
   cloudResource?: Prisma.CloudResourceUpdateOneRequiredWithoutFindingsNestedInput
 }
 
@@ -399,6 +435,9 @@ export type SecurityFindingUncheckedUpdateInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.SecurityFindingEventUncheckedUpdateManyWithoutFindingNestedInput
 }
 
 export type SecurityFindingCreateManyInput = {
@@ -416,6 +455,8 @@ export type SecurityFindingCreateManyInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
 }
 
 export type SecurityFindingUpdateManyMutationInput = {
@@ -432,6 +473,8 @@ export type SecurityFindingUpdateManyMutationInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SecurityFindingUncheckedUpdateManyInput = {
@@ -449,6 +492,8 @@ export type SecurityFindingUncheckedUpdateManyInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SecurityFindingListRelationFilter = {
@@ -481,6 +526,8 @@ export type SecurityFindingCountOrderByAggregateInput = {
   resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrder
+  resolutionNote?: Prisma.SortOrder
 }
 
 export type SecurityFindingMaxOrderByAggregateInput = {
@@ -497,6 +544,8 @@ export type SecurityFindingMaxOrderByAggregateInput = {
   resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrder
+  resolutionNote?: Prisma.SortOrder
 }
 
 export type SecurityFindingMinOrderByAggregateInput = {
@@ -513,6 +562,13 @@ export type SecurityFindingMinOrderByAggregateInput = {
   resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrder
+  resolutionNote?: Prisma.SortOrder
+}
+
+export type SecurityFindingScalarRelationFilter = {
+  is?: Prisma.SecurityFindingWhereInput
+  isNot?: Prisma.SecurityFindingWhereInput
 }
 
 export type SecurityFindingCreateNestedManyWithoutCloudResourceInput = {
@@ -569,6 +625,20 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type SecurityFindingCreateNestedOneWithoutEventsInput = {
+  create?: Prisma.XOR<Prisma.SecurityFindingCreateWithoutEventsInput, Prisma.SecurityFindingUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.SecurityFindingCreateOrConnectWithoutEventsInput
+  connect?: Prisma.SecurityFindingWhereUniqueInput
+}
+
+export type SecurityFindingUpdateOneRequiredWithoutEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.SecurityFindingCreateWithoutEventsInput, Prisma.SecurityFindingUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.SecurityFindingCreateOrConnectWithoutEventsInput
+  upsert?: Prisma.SecurityFindingUpsertWithoutEventsInput
+  connect?: Prisma.SecurityFindingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SecurityFindingUpdateToOneWithWhereWithoutEventsInput, Prisma.SecurityFindingUpdateWithoutEventsInput>, Prisma.SecurityFindingUncheckedUpdateWithoutEventsInput>
+}
+
 export type SecurityFindingCreateWithoutCloudResourceInput = {
   id?: string
   ruleId: string
@@ -583,6 +653,9 @@ export type SecurityFindingCreateWithoutCloudResourceInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  events?: Prisma.SecurityFindingEventCreateNestedManyWithoutFindingInput
 }
 
 export type SecurityFindingUncheckedCreateWithoutCloudResourceInput = {
@@ -599,6 +672,9 @@ export type SecurityFindingUncheckedCreateWithoutCloudResourceInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  events?: Prisma.SecurityFindingEventUncheckedCreateNestedManyWithoutFindingInput
 }
 
 export type SecurityFindingCreateOrConnectWithoutCloudResourceInput = {
@@ -645,6 +721,100 @@ export type SecurityFindingScalarWhereInput = {
   resolvedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SecurityFinding"> | Date | string
+  acknowledgedAt?: Prisma.DateTimeNullableFilter<"SecurityFinding"> | Date | string | null
+  resolutionNote?: Prisma.StringNullableFilter<"SecurityFinding"> | string | null
+}
+
+export type SecurityFindingCreateWithoutEventsInput = {
+  id?: string
+  ruleId: string
+  title: string
+  description: string
+  severity: $Enums.SecuritySeverity
+  status?: $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation: string
+  firstDetectedAt?: Date | string
+  lastDetectedAt?: Date | string
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+  cloudResource: Prisma.CloudResourceCreateNestedOneWithoutFindingsInput
+}
+
+export type SecurityFindingUncheckedCreateWithoutEventsInput = {
+  id?: string
+  cloudResourceId: string
+  ruleId: string
+  title: string
+  description: string
+  severity: $Enums.SecuritySeverity
+  status?: $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation: string
+  firstDetectedAt?: Date | string
+  lastDetectedAt?: Date | string
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
+}
+
+export type SecurityFindingCreateOrConnectWithoutEventsInput = {
+  where: Prisma.SecurityFindingWhereUniqueInput
+  create: Prisma.XOR<Prisma.SecurityFindingCreateWithoutEventsInput, Prisma.SecurityFindingUncheckedCreateWithoutEventsInput>
+}
+
+export type SecurityFindingUpsertWithoutEventsInput = {
+  update: Prisma.XOR<Prisma.SecurityFindingUpdateWithoutEventsInput, Prisma.SecurityFindingUncheckedUpdateWithoutEventsInput>
+  create: Prisma.XOR<Prisma.SecurityFindingCreateWithoutEventsInput, Prisma.SecurityFindingUncheckedCreateWithoutEventsInput>
+  where?: Prisma.SecurityFindingWhereInput
+}
+
+export type SecurityFindingUpdateToOneWithWhereWithoutEventsInput = {
+  where?: Prisma.SecurityFindingWhereInput
+  data: Prisma.XOR<Prisma.SecurityFindingUpdateWithoutEventsInput, Prisma.SecurityFindingUncheckedUpdateWithoutEventsInput>
+}
+
+export type SecurityFindingUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ruleId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.EnumSecuritySeverityFieldUpdateOperationsInput | $Enums.SecuritySeverity
+  status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation?: Prisma.StringFieldUpdateOperationsInput | string
+  firstDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cloudResource?: Prisma.CloudResourceUpdateOneRequiredWithoutFindingsNestedInput
+}
+
+export type SecurityFindingUncheckedUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudResourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ruleId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.EnumSecuritySeverityFieldUpdateOperationsInput | $Enums.SecuritySeverity
+  status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
+  evidence?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  remediation?: Prisma.StringFieldUpdateOperationsInput | string
+  firstDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastDetectedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SecurityFindingCreateManyCloudResourceInput = {
@@ -661,6 +831,8 @@ export type SecurityFindingCreateManyCloudResourceInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  acknowledgedAt?: Date | string | null
+  resolutionNote?: string | null
 }
 
 export type SecurityFindingUpdateWithoutCloudResourceInput = {
@@ -677,6 +849,9 @@ export type SecurityFindingUpdateWithoutCloudResourceInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.SecurityFindingEventUpdateManyWithoutFindingNestedInput
 }
 
 export type SecurityFindingUncheckedUpdateWithoutCloudResourceInput = {
@@ -693,6 +868,9 @@ export type SecurityFindingUncheckedUpdateWithoutCloudResourceInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.SecurityFindingEventUncheckedUpdateManyWithoutFindingNestedInput
 }
 
 export type SecurityFindingUncheckedUpdateManyWithoutCloudResourceInput = {
@@ -709,8 +887,39 @@ export type SecurityFindingUncheckedUpdateManyWithoutCloudResourceInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+
+/**
+ * Count Type SecurityFindingCountOutputType
+ */
+
+export type SecurityFindingCountOutputType = {
+  events: number
+}
+
+export type SecurityFindingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  events?: boolean | SecurityFindingCountOutputTypeCountEventsArgs
+}
+
+/**
+ * SecurityFindingCountOutputType without action
+ */
+export type SecurityFindingCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SecurityFindingCountOutputType
+   */
+  select?: Prisma.SecurityFindingCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SecurityFindingCountOutputType without action
+ */
+export type SecurityFindingCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SecurityFindingEventWhereInput
+}
 
 
 export type SecurityFindingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -728,7 +937,11 @@ export type SecurityFindingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  acknowledgedAt?: boolean
+  resolutionNote?: boolean
+  events?: boolean | Prisma.SecurityFinding$eventsArgs<ExtArgs>
   cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.SecurityFindingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["securityFinding"]>
 
 export type SecurityFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -746,6 +959,8 @@ export type SecurityFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  acknowledgedAt?: boolean
+  resolutionNote?: boolean
   cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["securityFinding"]>
 
@@ -764,6 +979,8 @@ export type SecurityFindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  acknowledgedAt?: boolean
+  resolutionNote?: boolean
   cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["securityFinding"]>
 
@@ -782,11 +999,15 @@ export type SecurityFindingSelectScalar = {
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  acknowledgedAt?: boolean
+  resolutionNote?: boolean
 }
 
-export type SecurityFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cloudResourceId" | "ruleId" | "title" | "description" | "severity" | "status" | "evidence" | "remediation" | "firstDetectedAt" | "lastDetectedAt" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["securityFinding"]>
+export type SecurityFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cloudResourceId" | "ruleId" | "title" | "description" | "severity" | "status" | "evidence" | "remediation" | "firstDetectedAt" | "lastDetectedAt" | "resolvedAt" | "createdAt" | "updatedAt" | "acknowledgedAt" | "resolutionNote", ExtArgs["result"]["securityFinding"]>
 export type SecurityFindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  events?: boolean | Prisma.SecurityFinding$eventsArgs<ExtArgs>
   cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.SecurityFindingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SecurityFindingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cloudResource?: boolean | Prisma.CloudResourceDefaultArgs<ExtArgs>
@@ -798,6 +1019,7 @@ export type SecurityFindingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Ty
 export type $SecurityFindingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SecurityFinding"
   objects: {
+    events: Prisma.$SecurityFindingEventPayload<ExtArgs>[]
     cloudResource: Prisma.$CloudResourcePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -815,6 +1037,8 @@ export type $SecurityFindingPayload<ExtArgs extends runtime.Types.Extensions.Int
     resolvedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    acknowledgedAt: Date | null
+    resolutionNote: string | null
   }, ExtArgs["result"]["securityFinding"]>
   composites: {}
 }
@@ -1209,6 +1433,7 @@ readonly fields: SecurityFindingFieldRefs;
  */
 export interface Prisma__SecurityFindingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  events<T extends Prisma.SecurityFinding$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SecurityFinding$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SecurityFindingEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cloudResource<T extends Prisma.CloudResourceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CloudResourceDefaultArgs<ExtArgs>>): Prisma.Prisma__CloudResourceClient<runtime.Types.Result.GetResult<Prisma.$CloudResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1253,6 +1478,8 @@ export interface SecurityFindingFieldRefs {
   readonly resolvedAt: Prisma.FieldRef<"SecurityFinding", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SecurityFinding", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SecurityFinding", 'DateTime'>
+  readonly acknowledgedAt: Prisma.FieldRef<"SecurityFinding", 'DateTime'>
+  readonly resolutionNote: Prisma.FieldRef<"SecurityFinding", 'String'>
 }
     
 
@@ -1651,6 +1878,30 @@ export type SecurityFindingDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many SecurityFindings to delete.
    */
   limit?: number
+}
+
+/**
+ * SecurityFinding.events
+ */
+export type SecurityFinding$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SecurityFindingEvent
+   */
+  select?: Prisma.SecurityFindingEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SecurityFindingEvent
+   */
+  omit?: Prisma.SecurityFindingEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SecurityFindingEventInclude<ExtArgs> | null
+  where?: Prisma.SecurityFindingEventWhereInput
+  orderBy?: Prisma.SecurityFindingEventOrderByWithRelationInput | Prisma.SecurityFindingEventOrderByWithRelationInput[]
+  cursor?: Prisma.SecurityFindingEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SecurityFindingEventScalarFieldEnum | Prisma.SecurityFindingEventScalarFieldEnum[]
 }
 
 /**
