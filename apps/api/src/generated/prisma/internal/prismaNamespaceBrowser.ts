@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   CloudAccount: 'CloudAccount',
-  CloudResource: 'CloudResource'
+  CloudResource: 'CloudResource',
+  SecurityFinding: 'SecurityFinding'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -101,6 +102,26 @@ export const CloudResourceScalarFieldEnum = {
 } as const
 
 export type CloudResourceScalarFieldEnum = (typeof CloudResourceScalarFieldEnum)[keyof typeof CloudResourceScalarFieldEnum]
+
+
+export const SecurityFindingScalarFieldEnum = {
+  id: 'id',
+  cloudResourceId: 'cloudResourceId',
+  ruleId: 'ruleId',
+  title: 'title',
+  description: 'description',
+  severity: 'severity',
+  status: 'status',
+  evidence: 'evidence',
+  remediation: 'remediation',
+  firstDetectedAt: 'firstDetectedAt',
+  lastDetectedAt: 'lastDetectedAt',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SecurityFindingScalarFieldEnum = (typeof SecurityFindingScalarFieldEnum)[keyof typeof SecurityFindingScalarFieldEnum]
 
 
 export const SortOrder = {

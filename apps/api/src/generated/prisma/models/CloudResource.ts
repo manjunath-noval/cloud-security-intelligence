@@ -227,6 +227,7 @@ export type CloudResourceWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CloudResource"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CloudResource"> | Date | string
   cloudAccount?: Prisma.XOR<Prisma.CloudAccountScalarRelationFilter, Prisma.CloudAccountWhereInput>
+  findings?: Prisma.SecurityFindingListRelationFilter
 }
 
 export type CloudResourceOrderByWithRelationInput = {
@@ -242,6 +243,7 @@ export type CloudResourceOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   cloudAccount?: Prisma.CloudAccountOrderByWithRelationInput
+  findings?: Prisma.SecurityFindingOrderByRelationAggregateInput
 }
 
 export type CloudResourceWhereUniqueInput = Prisma.AtLeast<{
@@ -261,6 +263,7 @@ export type CloudResourceWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"CloudResource"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CloudResource"> | Date | string
   cloudAccount?: Prisma.XOR<Prisma.CloudAccountScalarRelationFilter, Prisma.CloudAccountWhereInput>
+  findings?: Prisma.SecurityFindingListRelationFilter
 }, "id" | "cloudAccountId_providerResourceId">
 
 export type CloudResourceOrderByWithAggregationInput = {
@@ -309,6 +312,7 @@ export type CloudResourceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cloudAccount: Prisma.CloudAccountCreateNestedOneWithoutResourcesInput
+  findings?: Prisma.SecurityFindingCreateNestedManyWithoutCloudResourceInput
 }
 
 export type CloudResourceUncheckedCreateInput = {
@@ -323,6 +327,7 @@ export type CloudResourceUncheckedCreateInput = {
   discoverySource?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  findings?: Prisma.SecurityFindingUncheckedCreateNestedManyWithoutCloudResourceInput
 }
 
 export type CloudResourceUpdateInput = {
@@ -337,6 +342,7 @@ export type CloudResourceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cloudAccount?: Prisma.CloudAccountUpdateOneRequiredWithoutResourcesNestedInput
+  findings?: Prisma.SecurityFindingUpdateManyWithoutCloudResourceNestedInput
 }
 
 export type CloudResourceUncheckedUpdateInput = {
@@ -351,6 +357,7 @@ export type CloudResourceUncheckedUpdateInput = {
   discoverySource?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  findings?: Prisma.SecurityFindingUncheckedUpdateManyWithoutCloudResourceNestedInput
 }
 
 export type CloudResourceCreateManyInput = {
@@ -449,6 +456,11 @@ export type CloudResourceMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type CloudResourceScalarRelationFilter = {
+  is?: Prisma.CloudResourceWhereInput
+  isNot?: Prisma.CloudResourceWhereInput
+}
+
 export type CloudResourceCreateNestedManyWithoutCloudAccountInput = {
   create?: Prisma.XOR<Prisma.CloudResourceCreateWithoutCloudAccountInput, Prisma.CloudResourceUncheckedCreateWithoutCloudAccountInput> | Prisma.CloudResourceCreateWithoutCloudAccountInput[] | Prisma.CloudResourceUncheckedCreateWithoutCloudAccountInput[]
   connectOrCreate?: Prisma.CloudResourceCreateOrConnectWithoutCloudAccountInput | Prisma.CloudResourceCreateOrConnectWithoutCloudAccountInput[]
@@ -491,6 +503,20 @@ export type CloudResourceUncheckedUpdateManyWithoutCloudAccountNestedInput = {
   deleteMany?: Prisma.CloudResourceScalarWhereInput | Prisma.CloudResourceScalarWhereInput[]
 }
 
+export type CloudResourceCreateNestedOneWithoutFindingsInput = {
+  create?: Prisma.XOR<Prisma.CloudResourceCreateWithoutFindingsInput, Prisma.CloudResourceUncheckedCreateWithoutFindingsInput>
+  connectOrCreate?: Prisma.CloudResourceCreateOrConnectWithoutFindingsInput
+  connect?: Prisma.CloudResourceWhereUniqueInput
+}
+
+export type CloudResourceUpdateOneRequiredWithoutFindingsNestedInput = {
+  create?: Prisma.XOR<Prisma.CloudResourceCreateWithoutFindingsInput, Prisma.CloudResourceUncheckedCreateWithoutFindingsInput>
+  connectOrCreate?: Prisma.CloudResourceCreateOrConnectWithoutFindingsInput
+  upsert?: Prisma.CloudResourceUpsertWithoutFindingsInput
+  connect?: Prisma.CloudResourceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CloudResourceUpdateToOneWithWhereWithoutFindingsInput, Prisma.CloudResourceUpdateWithoutFindingsInput>, Prisma.CloudResourceUncheckedUpdateWithoutFindingsInput>
+}
+
 export type CloudResourceCreateWithoutCloudAccountInput = {
   id?: string
   providerResourceId: string
@@ -502,6 +528,7 @@ export type CloudResourceCreateWithoutCloudAccountInput = {
   discoverySource?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  findings?: Prisma.SecurityFindingCreateNestedManyWithoutCloudResourceInput
 }
 
 export type CloudResourceUncheckedCreateWithoutCloudAccountInput = {
@@ -515,6 +542,7 @@ export type CloudResourceUncheckedCreateWithoutCloudAccountInput = {
   discoverySource?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  findings?: Prisma.SecurityFindingUncheckedCreateNestedManyWithoutCloudResourceInput
 }
 
 export type CloudResourceCreateOrConnectWithoutCloudAccountInput = {
@@ -560,6 +588,78 @@ export type CloudResourceScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"CloudResource"> | Date | string
 }
 
+export type CloudResourceCreateWithoutFindingsInput = {
+  id?: string
+  providerResourceId: string
+  name: string
+  resourceType: string
+  provider: string
+  region?: string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  discoverySource?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  cloudAccount: Prisma.CloudAccountCreateNestedOneWithoutResourcesInput
+}
+
+export type CloudResourceUncheckedCreateWithoutFindingsInput = {
+  id?: string
+  cloudAccountId: string
+  providerResourceId: string
+  name: string
+  resourceType: string
+  provider: string
+  region?: string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  discoverySource?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CloudResourceCreateOrConnectWithoutFindingsInput = {
+  where: Prisma.CloudResourceWhereUniqueInput
+  create: Prisma.XOR<Prisma.CloudResourceCreateWithoutFindingsInput, Prisma.CloudResourceUncheckedCreateWithoutFindingsInput>
+}
+
+export type CloudResourceUpsertWithoutFindingsInput = {
+  update: Prisma.XOR<Prisma.CloudResourceUpdateWithoutFindingsInput, Prisma.CloudResourceUncheckedUpdateWithoutFindingsInput>
+  create: Prisma.XOR<Prisma.CloudResourceCreateWithoutFindingsInput, Prisma.CloudResourceUncheckedCreateWithoutFindingsInput>
+  where?: Prisma.CloudResourceWhereInput
+}
+
+export type CloudResourceUpdateToOneWithWhereWithoutFindingsInput = {
+  where?: Prisma.CloudResourceWhereInput
+  data: Prisma.XOR<Prisma.CloudResourceUpdateWithoutFindingsInput, Prisma.CloudResourceUncheckedUpdateWithoutFindingsInput>
+}
+
+export type CloudResourceUpdateWithoutFindingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  providerResourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  resourceType?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  discoverySource?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cloudAccount?: Prisma.CloudAccountUpdateOneRequiredWithoutResourcesNestedInput
+}
+
+export type CloudResourceUncheckedUpdateWithoutFindingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  cloudAccountId?: Prisma.StringFieldUpdateOperationsInput | string
+  providerResourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  resourceType?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  discoverySource?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type CloudResourceCreateManyCloudAccountInput = {
   id?: string
   providerResourceId: string
@@ -584,6 +684,7 @@ export type CloudResourceUpdateWithoutCloudAccountInput = {
   discoverySource?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  findings?: Prisma.SecurityFindingUpdateManyWithoutCloudResourceNestedInput
 }
 
 export type CloudResourceUncheckedUpdateWithoutCloudAccountInput = {
@@ -597,6 +698,7 @@ export type CloudResourceUncheckedUpdateWithoutCloudAccountInput = {
   discoverySource?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  findings?: Prisma.SecurityFindingUncheckedUpdateManyWithoutCloudResourceNestedInput
 }
 
 export type CloudResourceUncheckedUpdateManyWithoutCloudAccountInput = {
@@ -613,6 +715,35 @@ export type CloudResourceUncheckedUpdateManyWithoutCloudAccountInput = {
 }
 
 
+/**
+ * Count Type CloudResourceCountOutputType
+ */
+
+export type CloudResourceCountOutputType = {
+  findings: number
+}
+
+export type CloudResourceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  findings?: boolean | CloudResourceCountOutputTypeCountFindingsArgs
+}
+
+/**
+ * CloudResourceCountOutputType without action
+ */
+export type CloudResourceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CloudResourceCountOutputType
+   */
+  select?: Prisma.CloudResourceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CloudResourceCountOutputType without action
+ */
+export type CloudResourceCountOutputTypeCountFindingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SecurityFindingWhereInput
+}
+
 
 export type CloudResourceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -627,6 +758,8 @@ export type CloudResourceSelect<ExtArgs extends runtime.Types.Extensions.Interna
   createdAt?: boolean
   updatedAt?: boolean
   cloudAccount?: boolean | Prisma.CloudAccountDefaultArgs<ExtArgs>
+  findings?: boolean | Prisma.CloudResource$findingsArgs<ExtArgs>
+  _count?: boolean | Prisma.CloudResourceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cloudResource"]>
 
 export type CloudResourceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -676,6 +809,8 @@ export type CloudResourceSelectScalar = {
 export type CloudResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cloudAccountId" | "providerResourceId" | "name" | "resourceType" | "provider" | "region" | "metadata" | "discoverySource" | "createdAt" | "updatedAt", ExtArgs["result"]["cloudResource"]>
 export type CloudResourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cloudAccount?: boolean | Prisma.CloudAccountDefaultArgs<ExtArgs>
+  findings?: boolean | Prisma.CloudResource$findingsArgs<ExtArgs>
+  _count?: boolean | Prisma.CloudResourceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CloudResourceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cloudAccount?: boolean | Prisma.CloudAccountDefaultArgs<ExtArgs>
@@ -688,6 +823,7 @@ export type $CloudResourcePayload<ExtArgs extends runtime.Types.Extensions.Inter
   name: "CloudResource"
   objects: {
     cloudAccount: Prisma.$CloudAccountPayload<ExtArgs>
+    findings: Prisma.$SecurityFindingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1096,6 +1232,7 @@ readonly fields: CloudResourceFieldRefs;
 export interface Prisma__CloudResourceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   cloudAccount<T extends Prisma.CloudAccountDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CloudAccountDefaultArgs<ExtArgs>>): Prisma.Prisma__CloudAccountClient<runtime.Types.Result.GetResult<Prisma.$CloudAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  findings<T extends Prisma.CloudResource$findingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CloudResource$findingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SecurityFindingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1534,6 +1671,30 @@ export type CloudResourceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many CloudResources to delete.
    */
   limit?: number
+}
+
+/**
+ * CloudResource.findings
+ */
+export type CloudResource$findingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SecurityFinding
+   */
+  select?: Prisma.SecurityFindingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SecurityFinding
+   */
+  omit?: Prisma.SecurityFindingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SecurityFindingInclude<ExtArgs> | null
+  where?: Prisma.SecurityFindingWhereInput
+  orderBy?: Prisma.SecurityFindingOrderByWithRelationInput | Prisma.SecurityFindingOrderByWithRelationInput[]
+  cursor?: Prisma.SecurityFindingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SecurityFindingScalarFieldEnum | Prisma.SecurityFindingScalarFieldEnum[]
 }
 
 /**

@@ -398,7 +398,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   CloudAccount: 'CloudAccount',
-  CloudResource: 'CloudResource'
+  CloudResource: 'CloudResource',
+  SecurityFinding: 'SecurityFinding'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cloudAccount" | "cloudResource"
+    modelProps: "cloudAccount" | "cloudResource" | "securityFinding"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -566,6 +567,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SecurityFinding: {
+      payload: Prisma.$SecurityFindingPayload<ExtArgs>
+      fields: Prisma.SecurityFindingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SecurityFindingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SecurityFindingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>
+        }
+        findFirst: {
+          args: Prisma.SecurityFindingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SecurityFindingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>
+        }
+        findMany: {
+          args: Prisma.SecurityFindingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>[]
+        }
+        create: {
+          args: Prisma.SecurityFindingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>
+        }
+        createMany: {
+          args: Prisma.SecurityFindingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SecurityFindingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>[]
+        }
+        delete: {
+          args: Prisma.SecurityFindingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>
+        }
+        update: {
+          args: Prisma.SecurityFindingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>
+        }
+        deleteMany: {
+          args: Prisma.SecurityFindingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SecurityFindingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SecurityFindingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>[]
+        }
+        upsert: {
+          args: Prisma.SecurityFindingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityFindingPayload>
+        }
+        aggregate: {
+          args: Prisma.SecurityFindingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSecurityFinding>
+        }
+        groupBy: {
+          args: Prisma.SecurityFindingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SecurityFindingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SecurityFindingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SecurityFindingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -635,6 +710,26 @@ export const CloudResourceScalarFieldEnum = {
 } as const
 
 export type CloudResourceScalarFieldEnum = (typeof CloudResourceScalarFieldEnum)[keyof typeof CloudResourceScalarFieldEnum]
+
+
+export const SecurityFindingScalarFieldEnum = {
+  id: 'id',
+  cloudResourceId: 'cloudResourceId',
+  ruleId: 'ruleId',
+  title: 'title',
+  description: 'description',
+  severity: 'severity',
+  status: 'status',
+  evidence: 'evidence',
+  remediation: 'remediation',
+  firstDetectedAt: 'firstDetectedAt',
+  lastDetectedAt: 'lastDetectedAt',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SecurityFindingScalarFieldEnum = (typeof SecurityFindingScalarFieldEnum)[keyof typeof SecurityFindingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -729,6 +824,34 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'SecuritySeverity'
+ */
+export type EnumSecuritySeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecuritySeverity'>
+    
+
+
+/**
+ * Reference to a field of type 'SecuritySeverity[]'
+ */
+export type ListEnumSecuritySeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecuritySeverity[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStatus'
+ */
+export type EnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStatus[]'
+ */
+export type ListEnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus[]'>
     
 
 
@@ -898,6 +1021,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   cloudAccount?: Prisma.CloudAccountOmit
   cloudResource?: Prisma.CloudResourceOmit
+  securityFinding?: Prisma.SecurityFindingOmit
 }
 
 /* Types for Logging */

@@ -51,3 +51,8 @@ export type CloudAccount = Prisma.CloudAccountModel
  * 
  */
 export type CloudResource = Prisma.CloudResourceModel
+/**
+ * Model SecurityFinding
+ * 
+ */
+export type SecurityFinding = Prisma.SecurityFindingModel

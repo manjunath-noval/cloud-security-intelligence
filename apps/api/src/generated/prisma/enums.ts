@@ -9,7 +9,21 @@
 * 🟢 You can import this file directly.
 */
 
+export const SecuritySeverity = {
+  CRITICAL: 'CRITICAL',
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW',
+  INFORMATIONAL: 'INFORMATIONAL'
+} as const
+
+export type SecuritySeverity = (typeof SecuritySeverity)[keyof typeof SecuritySeverity]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const FindingStatus = {
+  OPEN: 'OPEN',
+  ACKNOWLEDGED: 'ACKNOWLEDGED',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type FindingStatus = (typeof FindingStatus)[keyof typeof FindingStatus]
