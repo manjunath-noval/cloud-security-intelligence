@@ -63,7 +63,6 @@ export const navigationGroups: NavigationGroup[] = [
         title: "IAM Intelligence",
         href: "/iam",
         icon: Users,
-        disabled: true,
       },
       {
         title: "Attack Paths",
