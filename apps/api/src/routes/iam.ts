@@ -4,6 +4,7 @@ import { z } from "zod";
 import { prisma } from "../db.js";
 import { discoverCloudIam } from "../discovery/iam-discovery.service.js";
 import { scanCloudAccountIam } from "../security/iam-security.service.js";
+import { getPermissionIntelligence } from "../security/permission-intelligence.service.js";
 
 const router = Router();
 
@@ -117,6 +118,47 @@ router.get("/identities", async (req, res) => {
 
     return res.status(500).json({
       error: "Unable to retrieve IAM identities."
+    });
+  }
+});
+
+// GET /api/iam/permission-analysis?cloudAccountId=...
+router.get("/permission-analysis", async (req, res) => {
+  const validation = accountQuerySchema.safeParse(req.query);
+
+  if (!validation.success) {
+    return res.status(400).json({
+      error: "A valid cloudAccountId is required.",
+    });
+  }
+
+  try {
+    const analysis = await getPermissionIntelligence(
+      validation.data.cloudAccountId
+    );
+
+    return res.status(200).json({
+      message: "Permission intelligence analysis completed successfully.",
+      analysis,
+    });
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unable to analyze IAM permissions.";
+
+    if (message === "Cloud account not found") {
+      return res.status(404).json({ error: message });
+    }
+
+    if (message === "Cloud account is inactive") {
+      return res.status(409).json({ error: message });
+    }
+
+    console.error("Permission intelligence analysis failed:", error);
+
+    return res.status(500).json({
+      error: "Unable to analyze IAM permissions.",
     });
   }
 });

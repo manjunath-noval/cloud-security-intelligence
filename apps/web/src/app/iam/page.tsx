@@ -46,19 +46,85 @@ type RoleAssignment = {
 };
 
 type IdentitiesResponse = {
-  count: number;
+  total: number;
   identities: CloudIdentity[];
 };
 
 type RolesResponse = {
-  count: number;
+  total: number;
   roles: CloudRole[];
 };
 
 type AssignmentsResponse = {
-  count: number;
+  total: number;
   assignments: RoleAssignment[];
 };
+
+type PermissionScopeType =
+  | "TENANT"
+  | "MANAGEMENT_GROUP"
+  | "SUBSCRIPTION"
+  | "RESOURCE_GROUP"
+  | "RESOURCE"
+  | "UNKNOWN";
+
+type PermissionAnalysis = {
+  hasWildcardManagementAccess: boolean;
+  hasReadOnlyManagementPattern: boolean;
+  hasAccessManagementPermissions: boolean;
+  hasDataPlanePermissions: boolean;
+  hasDeclaredExclusions: boolean;
+  scopeType: PermissionScopeType;
+  managementActions: string[];
+  dataActions: string[];
+  excludedManagementActions: string[];
+  excludedDataActions: string[];
+  analysisLimitations: string[];
+};
+type PermissionAssignment = {
+  assignmentId: string;
+  scope: string;
+  condition: string | null;
+  discoverySource: string;
+  identity: {
+    id: string;
+    displayName: string;
+    identityType: CloudIdentity["identityType"];
+    isEnabled: boolean;
+    discoverySource: string;
+  };
+  analysis: PermissionAnalysis;
+};
+
+type PermissionRole = {
+  roleId: string;
+  name: string;
+  description: string;
+  isBuiltIn: boolean;
+  discoverySource: string;
+  permissions: {
+    actions: string[];
+    notActions: string[];
+    dataActions: string[];
+    notDataActions: string[];
+  };
+  assignableScopes: string[];
+  assignmentCount: number;
+  assignments: PermissionAssignment[];
+};
+
+type PermissionAnalysisResponse = {
+  message: string;
+  analysis: {
+    cloudAccountId: string;
+    accountId: string;
+    name: string;
+    rolesAnalyzed: number;
+    assignmentsAnalyzed: number;
+    roles: PermissionRole[];
+  };
+};
+
 
 export default function IamPage() {
   const [accounts, setAccounts] = useState<CloudAccount[]>([]);
@@ -72,6 +138,9 @@ export default function IamPage() {
   const [iamError, setIamError] = useState("");
   const [identitySearch, setIdentitySearch] = useState("");
   const [identityTypeFilter, setIdentityTypeFilter] = useState("ALL");
+  const [permissionAnalysis, setPermissionAnalysis] =
+  useState<PermissionAnalysisResponse["analysis"] | null>(null);
+  const [permissionLoading, setPermissionLoading] = useState(false);
 
   useEffect(() => {
     async function loadAccounts() {
@@ -113,21 +182,26 @@ export default function IamPage() {
     setIamError("");
 
     try {
-      const [identityData, roleData, assignmentData] = await Promise.all([
-        apiRequest<IdentitiesResponse>("/iam/identities", {
-          params: { cloudAccountId: selectedAccountId },
-        }),
-        apiRequest<RolesResponse>("/iam/roles", {
-          params: { cloudAccountId: selectedAccountId },
-        }),
-        apiRequest<AssignmentsResponse>("/iam/assignments", {
-          params: { cloudAccountId: selectedAccountId },
-        }),
-      ]);
+      const [identityData, roleData, assignmentData, permissionData] =
+        await Promise.all([
+          apiRequest<IdentitiesResponse>("/iam/identities", {
+            params: { cloudAccountId: selectedAccountId },
+          }),
+          apiRequest<RolesResponse>("/iam/roles", {
+            params: { cloudAccountId: selectedAccountId },
+          }),
+          apiRequest<AssignmentsResponse>("/iam/assignments", {
+            params: { cloudAccountId: selectedAccountId },
+          }),
+          apiRequest<PermissionAnalysisResponse>("/iam/permission-analysis", {
+            params: { cloudAccountId: selectedAccountId },
+          }),
+        ]);
 
       setIdentities(identityData.identities);
       setRoles(roleData.roles);
       setAssignments(assignmentData.assignments);
+      setPermissionAnalysis(permissionData.analysis);
     } catch (err) {
       setIamError(
         err instanceof Error ? err.message : "Unable to load IAM data."
@@ -513,6 +587,313 @@ const roleIntelligence = roles.map((role) => {
     Role assignment counts are based on discovered configuration.
     Effective permissions have not yet been calculated.
   </p>
+  </section>
+<section className="space-y-4">
+  <div>
+    <div className="flex flex-wrap items-center gap-2">
+      <h3 className="text-lg font-semibold">Permission Intelligence</h3>
+      <span className="rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-xs text-primary">
+        SIMULATED ANALYSIS
+      </span>
+    </div>
+    <p className="mt-1 text-sm text-muted-foreground">
+      Inspect declared management permissions, data permissions, exclusions
+      and assignment scopes.
+    </p>
+  </div>
+  {iamLoading ? (
+    <div className="rounded-xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+      <RefreshCw size={18} className="mx-auto mb-3 animate-spin" />
+      Analyzing IAM permissions...
+    </div>
+  ) : !permissionAnalysis ? (
+    <div className="rounded-xl border border-border bg-card p-8 text-center">
+      <Shield size={24} className="mx-auto text-muted-foreground" />
+      <p className="mt-3 text-sm font-medium">
+        Permission analysis unavailable
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Select an active cloud account to inspect its permission configuration.
+      </p>
+    </div>
+  ) : (
+    <>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {[
+          {
+            label: "Wildcard management",
+            count: permissionAnalysis.roles.reduce(
+              (total, role) =>
+                total +
+                role.assignments.filter(
+                  (assignment) =>
+                    assignment.analysis.hasWildcardManagementAccess
+                ).length,
+              0
+            ),
+          },
+          {
+            label: "Read-only patterns",
+            count: permissionAnalysis.roles.reduce(
+              (total, role) =>
+                total +
+                role.assignments.filter(
+                  (assignment) =>
+                    assignment.analysis.hasReadOnlyManagementPattern
+                ).length,
+              0
+            ),
+          },
+          {
+            label: "Access management",
+            count: permissionAnalysis.roles.reduce(
+              (total, role) =>
+                total +
+                role.assignments.filter(
+                  (assignment) =>
+                    assignment.analysis.hasAccessManagementPermissions
+                ).length,
+              0
+            ),
+          },
+          {
+            label: "Data-plane permissions",
+            count: permissionAnalysis.roles.reduce(
+              (total, role) =>
+                total +
+                role.assignments.filter(
+                  (assignment) =>
+                    assignment.analysis.hasDataPlanePermissions
+                ).length,
+              0
+            ),
+          },
+        ].map((metric) => (
+          <div
+            key={metric.label}
+            className="rounded-xl border border-border bg-card p-5"
+          >
+            <p className="text-sm text-muted-foreground">{metric.label}</p>
+            <p className="mt-4 text-2xl font-semibold tabular-nums">
+              {metric.count}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Matching assignments
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-4">
+        {permissionAnalysis.roles.map((role) => (
+          <div
+            key={role.roleId}
+            className="overflow-hidden rounded-xl border border-border bg-card"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border p-5">
+              <div>
+                <h4 className="font-semibold">{role.name}</h4>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {role.assignmentCount} role assignments analyzed
+                </p>
+              </div>
+              <Shield size={19} className="text-primary" />
+            </div>
+
+            <div className="divide-y divide-border">
+              {role.assignments.map((assignment) => {
+                const analysis = assignment.analysis;
+
+                const indicators = [
+                  {
+                    label: "Wildcard management access",
+                    active: analysis.hasWildcardManagementAccess,
+                  },
+                  {
+                    label: "Read-only management pattern",
+                    active: analysis.hasReadOnlyManagementPattern,
+                  },
+                  {
+                    label: "Access management permissions",
+                    active: analysis.hasAccessManagementPermissions,
+                  },
+                  {
+                    label: "Data-plane permissions",
+                    active: analysis.hasDataPlanePermissions,
+                  },
+                  {
+                    label: "Declared exclusions",
+                    active: analysis.hasDeclaredExclusions,
+                  },
+                ];
+
+                return (
+                  <div key={assignment.assignmentId} className="space-y-4 p-5">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="font-medium">
+                          {assignment.identity.displayName}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {assignment.identity.identityType.replaceAll(
+                            "_",
+                            " "
+                          )}
+                          {" · "}
+                          {assignment.identity.isEnabled
+                            ? "Enabled"
+                            : "Disabled"}
+                        </p>
+                      </div>
+
+                      <span className="w-fit rounded-md border border-border px-2 py-1 text-xs">
+                        {analysis.scopeType.replaceAll("_", " ")}
+                      </span>
+                    </div>
+
+                    <div>
+                      <p className="mb-2 text-xs font-medium text-muted-foreground">
+                        Permission classification
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {indicators.map((indicator) => (
+                          <span
+                            key={indicator.label}
+                            className={`rounded-md px-2.5 py-1.5 text-xs ${
+                              indicator.active
+                                ? "bg-amber-500/10 text-amber-400"
+                                : "bg-muted text-muted-foreground"
+                            }`}
+                          >
+                            {indicator.active ? "Detected: " : "Not detected: "}
+                            {indicator.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <p className="mb-2 text-xs font-medium text-muted-foreground">
+                          Management actions
+                        </p>
+                        {analysis.managementActions.length > 0 ? (
+                          <div className="space-y-1">
+                            {analysis.managementActions.map((action, index) => (
+                              <code
+                                key={`${action}-${index}`}
+                                className="block break-all rounded bg-muted/50 px-2 py-1 text-xs"
+                              >
+                                {action}
+                              </code>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground">
+                            No management actions declared.
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="mb-2 text-xs font-medium text-muted-foreground">
+                          Data actions
+                        </p>
+                        {analysis.dataActions.length > 0 ? (
+                          <div className="space-y-1">
+                            {analysis.dataActions.map((action, index) => (
+                              <code
+                                key={`${action}-${index}`}
+                                className="block break-all rounded bg-muted/50 px-2 py-1 text-xs"
+                              >
+                                {action}
+                              </code>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground">
+                            No data actions declared.
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="mb-2 text-xs font-medium text-muted-foreground">
+                          Excluded management actions
+                        </p>
+                        {analysis.excludedManagementActions.length > 0 ? (
+                          <div className="space-y-1">
+                            {analysis.excludedManagementActions.map(
+                              (action, index) => (
+                                <code
+                                  key={`${action}-${index}`}
+                                  className="block break-all rounded bg-muted/50 px-2 py-1 text-xs"
+                                >
+                                  {action}
+                                </code>
+                              )
+                            )}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground">
+                            No management exclusions declared.
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="mb-2 text-xs font-medium text-muted-foreground">
+                          Excluded data actions
+                        </p>
+                        {analysis.excludedDataActions.length > 0 ? (
+                          <div className="space-y-1">
+                            {analysis.excludedDataActions.map(
+                              (action, index) => (
+                                <code
+                                  key={`${action}-${index}`}
+                                  className="block break-all rounded bg-muted/50 px-2 py-1 text-xs"
+                                >
+                                  {action}
+                                </code>
+                              )
+                            )}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground">
+                            No data exclusions declared.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {analysis.analysisLimitations.length > 0 && (
+                      <div className="rounded-lg border border-border bg-muted/30 p-3">
+                        <p className="mb-2 text-xs font-medium">
+                          Analysis limitations
+                        </p>
+                        <ul className="list-disc space-y-1 pl-4 text-xs text-muted-foreground">
+                          {analysis.analysisLimitations.map((limitation, index) => (
+                            <li key={index}>{limitation}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-xs text-muted-foreground">
+        This is a first-pass analysis of declared role permissions, not a
+        complete calculation of effective Azure access. Results use simulated
+        discovery data. Group membership, inherited assignments, PIM and
+        conditional access are not fully evaluated.
+      </p>
+    </>
+  )}
 </section>
       </div>
     </AppShell>
