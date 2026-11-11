@@ -1,6 +1,7 @@
 
 import { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../db.js";
+import { calculateIamRiskScore } from "./iam-risk-scoring.js";
 import {
   evaluateIamSecurity,
   type IamEvaluationInput,
@@ -15,6 +16,10 @@ type IamScanResult = {
   findingsCreated: number;
   findingsUpdated: number;
   findingsReopened: number;
+  riskScore: number;
+  riskLevel: string;
+  riskFindingCount: number;
+  severityBreakdown: Record<string, number>;
   findings: IamSecurityDetection[];
 };
 
@@ -223,10 +228,22 @@ export async function scanCloudAccountIam(
       }
     }
   });
+    const riskFindings = Array.from(
+    detectionsByIdentityAndRule.entries()
+  ).map(([key, item]) => ({
+    ...item.detection,
+    identityId: item.cloudIdentityId,
+  }));
+
+  const riskSummary = calculateIamRiskScore(riskFindings);
 
   return {
     accountId: account.id,
     accountName: account.name,
+    riskScore: riskSummary.score,
+    riskLevel: riskSummary.level,
+    riskFindingCount: riskSummary.findingCount,
+    severityBreakdown: riskSummary.severityBreakdown,
     identitiesScanned: account.identities.length,
     assignmentsScanned,
     findingsCreated,

@@ -124,8 +124,28 @@ type PermissionAnalysisResponse = {
     roles: PermissionRole[];
   };
 };
-
-
+type IamRiskScanResponse = {
+  message: string;
+  scan: {
+    accountId: string;
+    accountName: string;
+    riskScore: number;
+    riskLevel: "NONE" | "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
+    riskFindingCount: number;
+    severityBreakdown: {
+      CRITICAL: number;
+      HIGH: number;
+      MEDIUM: number;
+      LOW: number;
+      INFORMATIONAL: number;
+    };
+    identitiesScanned: number;
+    assignmentsScanned: number;
+    findingsCreated: number;
+    findingsUpdated: number;
+    findingsReopened: number;
+  };
+};
 export default function IamPage() {
   const [accounts, setAccounts] = useState<CloudAccount[]>([]);
   const [selectedAccountId, setSelectedAccountId] = useState("");
@@ -141,6 +161,32 @@ export default function IamPage() {
   const [permissionAnalysis, setPermissionAnalysis] =
   useState<PermissionAnalysisResponse["analysis"] | null>(null);
   const [permissionLoading, setPermissionLoading] = useState(false);
+  const [riskScan, setRiskScan] =
+  useState<IamRiskScanResponse["scan"] | null>(null);
+  const [riskScanLoading, setRiskScanLoading] = useState(false);
+const [riskScanError, setRiskScanError] = useState("");
+
+async function runIamRiskScan() {
+  if (!selectedAccountId || riskScanLoading) return;
+
+  setRiskScanLoading(true);
+  setRiskScanError("");
+
+  try {
+    const response = await apiRequest<IamRiskScanResponse>(
+      `/iam/scan/${selectedAccountId}`,
+      { method: "POST" }
+    );
+
+    setRiskScan(response.scan);
+  } catch (error) {
+    setRiskScanError(
+      error instanceof Error ? error.message : "IAM risk scan failed."
+    );
+  } finally {
+    setRiskScanLoading(false);
+  }
+}
 
   useEffect(() => {
     async function loadAccounts() {
@@ -388,8 +434,116 @@ const roleIntelligence = roles.map((role) => {
             </div>
           ))}
         </section>
+        {/* IAM Risk Overview */}
+        <section className="rounded-xl border border-border bg-card p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="text-lg font-semibold">IAM Risk Overview</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Run a security scan to calculate the account's IAM risk score.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={runIamRiskScan}
+              disabled={!selectedAccountId || riskScanLoading}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <RefreshCw
+                size={16}
+                className={riskScanLoading ? "animate-spin" : ""}
+              />
+              {riskScanLoading ? "Scanning..." : "Run IAM Risk Scan"}
+            </button>
+          </div>
+
+          {riskScanError && (
+            <div
+              role="alert"
+              className="mt-4 rounded-lg border border-danger/30 bg-danger/10 p-3 text-sm text-danger"
+            >
+              {riskScanError}
+            </div>
+          )}
+
+          {riskScan ? (
+            <div className="mt-5 border-t border-border pt-5">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Account risk score
+                  </p>
+                  <p className="mt-2 text-3xl font-bold tabular-nums">
+                    {riskScan.riskScore}
+                    <span className="text-base font-normal text-muted-foreground">
+                      /100
+                    </span>
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground">Risk level</p>
+                  <p className="mt-2 text-xl font-semibold">
+                    {riskScan.riskLevel}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Risk findings
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tabular-nums">
+                    {riskScan.riskFindingCount}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Identities scanned
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tabular-nums">
+                    {riskScan.identitiesScanned}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 border-t border-border pt-4">
+                <h4 className="text-sm font-medium">Severity breakdown</h4>
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                  {Object.entries(riskScan.severityBreakdown).map(
+                    ([severity, count]) => (
+                      <div
+                        key={severity}
+                        className="rounded-lg bg-muted/40 p-3"
+                      >
+                        <p className="text-xs text-muted-foreground">
+                          {severity}
+                        </p>
+                        <p className="mt-1 text-xl font-semibold tabular-nums">
+                          {count}
+                        </p>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+
+              <p className="mt-4 text-xs text-muted-foreground">
+                Product-defined heuristic score based on detected IAM findings.
+                This is not an official Microsoft risk score.
+              </p>
+            </div>
+          ) : (
+            <p className="mt-5 border-t border-border pt-4 text-sm text-muted-foreground">
+              No risk scan has been run for this account yet.
+            </p>
+          )}
+        </section>
+
         <section className="space-y-4">
   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
     <div>
       <h3 className="text-lg font-semibold">Identity Inventory</h3>
       <p className="mt-1 text-sm text-muted-foreground">
