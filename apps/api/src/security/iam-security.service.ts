@@ -17,10 +17,13 @@ type IamScanResult = {
   findingsUpdated: number;
   findingsReopened: number;
   riskScore: number;
+  rawRiskScore: number;
   riskLevel: string;
   riskExposureCount: number;
   detectedFindingCount: number;
   severityBreakdown: Record<string, number>;
+  severityPoints: Record<string, number>;
+  riskScoreWasCapped: boolean;
   findings: IamSecurityDetection[];
 };
 
@@ -245,10 +248,13 @@ export async function scanCloudAccountIam(
     accountId: account.id,
     accountName: account.name,
     riskScore: riskSummary.score,
+    rawRiskScore: riskSummary.rawScore,
     riskLevel: riskSummary.level,
     riskExposureCount: riskSummary.findingCount,
     detectedFindingCount: detectionsByIdentityAndRule.size,
     severityBreakdown: riskSummary.severityBreakdown,
+    severityPoints: riskSummary.severityPoints,
+    riskScoreWasCapped: riskSummary.wasCapped,
     identitiesScanned: account.identities.length,
     assignmentsScanned,
     findingsCreated,

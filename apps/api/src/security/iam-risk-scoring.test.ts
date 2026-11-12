@@ -111,17 +111,32 @@ describe("calculateIamRiskScore", () => {
     expect(result.findingCount).toBe(3);
   });
 
-  it("caps the score at 100", () => {
-    const findings = Array.from(
-      { length: 4 },
-      (_, index) =>
-        createFinding(`IAM-${index}`, "CRITICAL", "identity-1", [
-          `assignment-${index}`,
-        ])
-    );
+  it("caps the score at 100 and preserves the raw score", () => {
+  const result = calculateIamRiskScore([
+    createFinding("IAM-AZ-001", "CRITICAL", "identity-1", ["assignment-1"]),
+    createFinding("IAM-AZ-004", "HIGH", "identity-2", ["assignment-2"]),
+    createFinding("IAM-AZ-003", "MEDIUM", "identity-3", ["assignment-3"]),
+    createFinding("IAM-AZ-005", "CRITICAL", "identity-4", ["assignment-4"]),
+  ]);
 
-    expect(calculateIamRiskScore(findings).score).toBe(100);
+  expect(result.score).toBe(100);
+  expect(result.rawScore).toBe(120);
+  expect(result.wasCapped).toBe(true);
+  expect(result.severityBreakdown).toEqual({
+    CRITICAL: 2,
+    HIGH: 1,
+    MEDIUM: 1,
+    LOW: 0,
+    INFORMATIONAL: 0,
   });
+  expect(result.severityPoints).toEqual({
+    CRITICAL: 80,
+    HIGH: 25,
+    MEDIUM: 15,
+    LOW: 0,
+    INFORMATIONAL: 0,
+  });
+});
 
   it("classifies risk levels correctly", () => {
     const cases = [

@@ -15,9 +15,12 @@ export type IamRiskFinding = IamSecurityDetection & {
 
 export type IamRiskScore = {
   score: number;
+  rawScore: number;
   level: IamRiskLevel;
   findingCount: number;
   severityBreakdown: Record<string, number>;
+  severityPoints: Record<string, number>;
+  wasCapped: boolean;
 };
 
 const SEVERITY_POINTS: Record<string, number> = {
@@ -67,7 +70,15 @@ export function calculateIamRiskScore(
     }
   }
 
-  const severityBreakdown: Record<string, number> = {
+   const severityBreakdown: Record<string, number> = {
+    CRITICAL: 0,
+    HIGH: 0,
+    MEDIUM: 0,
+    LOW: 0,
+    INFORMATIONAL: 0,
+  };
+
+  const severityPoints: Record<string, number> = {
     CRITICAL: 0,
     HIGH: 0,
     MEDIUM: 0,
@@ -78,16 +89,22 @@ export function calculateIamRiskScore(
   let rawScore = 0;
 
   for (const finding of uniqueFindings.values()) {
+    const points = SEVERITY_POINTS[finding.severity] ?? 0;
+
     severityBreakdown[finding.severity]++;
-    rawScore += SEVERITY_POINTS[finding.severity] ?? 0;
+    severityPoints[finding.severity] += points;
+    rawScore += points;
   }
 
   const score = Math.min(rawScore, 100);
 
   return {
     score,
+    rawScore,
     level: getRiskLevel(score),
     findingCount: uniqueFindings.size,
     severityBreakdown,
+    severityPoints,
+    wasCapped: rawScore > 100,
   };
 }
