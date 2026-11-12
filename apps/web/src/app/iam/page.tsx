@@ -131,7 +131,8 @@ type IamRiskScanResponse = {
     accountName: string;
     riskScore: number;
     riskLevel: "NONE" | "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
-    riskFindingCount: number;
+    riskExposureCount: number;
+    detectedFindingCount: number;
     severityBreakdown: {
       CRITICAL: number;
       HIGH: number;
@@ -491,12 +492,21 @@ const roleIntelligence = roles.map((role) => {
 
                 <div>
                   <p className="text-xs text-muted-foreground">
-                    Risk findings
-                  </p>
+  Unique risk exposures
+</p>
                   <p className="mt-2 text-2xl font-semibold tabular-nums">
-                    {riskScan.riskFindingCount}
+                    {riskScan.riskExposureCount}
                   </p>
                 </div>
+
+<div>
+  <p className="text-xs text-muted-foreground">
+    Detected security findings
+  </p>
+  <p className="mt-2 text-2xl font-semibold tabular-nums">
+    {riskScan.detectedFindingCount}
+  </p>
+</div>
 
                 <div>
                   <p className="text-xs text-muted-foreground">
@@ -530,7 +540,7 @@ const roleIntelligence = roles.map((role) => {
               </div>
 
               <p className="mt-4 text-xs text-muted-foreground">
-                Product-defined heuristic score based on detected IAM findings.
+                Product-defined heuristic score based on unique scored IAM exposures.
                 This is not an official Microsoft risk score.
               </p>
             </div>
