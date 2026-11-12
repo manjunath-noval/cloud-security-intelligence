@@ -229,11 +229,14 @@ export async function scanCloudAccountIam(
     }
   });
     const riskFindings = Array.from(
-    detectionsByIdentityAndRule.entries()
-  ).map(([key, item]) => ({
-    ...item.detection,
-    identityId: item.cloudIdentityId,
-  }));
+  detectionsByIdentityAndRule.values()
+).map((item) => ({
+  ...item.detection,
+  identityId: item.cloudIdentityId,
+  assignmentIds: item.matchingAssignments.map(
+    (assignment) => assignment.assignmentId
+  ),
+}));
 
   const riskSummary = calculateIamRiskScore(riskFindings);
 

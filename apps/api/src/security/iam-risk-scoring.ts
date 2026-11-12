@@ -10,6 +10,7 @@ export type IamRiskLevel =
 
 export type IamRiskFinding = IamSecurityDetection & {
   identityId: string;
+  assignmentIds: string[];
 };
 
 export type IamRiskScore = {
@@ -41,8 +42,29 @@ export function calculateIamRiskScore(
   const uniqueFindings = new Map<string, IamRiskFinding>();
 
   for (const finding of findings) {
-    const key = `${finding.identityId}:${finding.ruleId}`;
-    uniqueFindings.set(key, finding);
+    for (const assignmentId of new Set(finding.assignmentIds)) {
+      const overlapGroup =
+        finding.ruleId === "IAM-AZ-001" ||
+        finding.ruleId === "IAM-AZ-002"
+          ? "UNRESTRICTED_MANAGEMENT"
+          : finding.ruleId;
+
+      const key = [
+        finding.identityId,
+        assignmentId,
+        overlapGroup,
+      ].join(":");
+
+      const existing = uniqueFindings.get(key);
+
+      if (
+        !existing ||
+        SEVERITY_POINTS[finding.severity] >
+          SEVERITY_POINTS[existing.severity]
+      ) {
+        uniqueFindings.set(key, finding);
+      }
+    }
   }
 
   const severityBreakdown: Record<string, number> = {
