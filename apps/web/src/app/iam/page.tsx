@@ -130,9 +130,18 @@ type IamRiskScanResponse = {
     accountId: string;
     accountName: string;
     riskScore: number;
+    rawRiskScore: number;
     riskLevel: "NONE" | "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
     riskExposureCount: number;
     detectedFindingCount: number;
+    severityPoints: {
+      CRITICAL: number;
+      HIGH: number;
+      MEDIUM: number;
+      LOW: number;
+      INFORMATIONAL: number;
+    };
+    riskScoreWasCapped: boolean;
     severityBreakdown: {
       CRITICAL: number;
       HIGH: number;
@@ -484,6 +493,18 @@ const roleIntelligence = roles.map((role) => {
                 </div>
 
                 <div>
+  <p className="text-xs text-muted-foreground">
+    Raw risk score
+  </p>
+  <p className="mt-2 text-3xl font-bold tabular-nums">
+    {riskScan.rawRiskScore}
+  </p>
+  <p className="mt-1 text-xs text-muted-foreground">
+    Before the 100-point cap
+  </p>
+</div>
+
+                <div>
                   <p className="text-xs text-muted-foreground">Risk level</p>
                   <p className="mt-2 text-xl font-semibold">
                     {riskScan.riskLevel}
@@ -519,6 +540,34 @@ const roleIntelligence = roles.map((role) => {
               </div>
 
               <div className="mt-5 border-t border-border pt-4">
+  <h4 className="text-sm font-medium">
+    Risk Score Contributions
+  </h4>
+
+  <p className="mt-1 text-xs text-muted-foreground">
+    Points added to the raw score by each severity level.
+  </p>
+
+  <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
+    {Object.entries(riskScan.severityPoints).map(
+      ([severity, points]) => (
+        <div
+          key={severity}
+          className="rounded-lg bg-muted/40 p-3"
+        >
+          <p className="text-xs text-muted-foreground">
+            {severity}
+          </p>
+          <p className="mt-1 text-xl font-semibold tabular-nums">
+            +{points}
+          </p>
+        </div>
+      )
+    )}
+  </div>
+</div>
+
+              <div className="mt-5 border-t border-border pt-4">
                 <h4 className="text-sm font-medium">Severity breakdown</h4>
                 <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
                   {Object.entries(riskScan.severityBreakdown).map(
@@ -550,6 +599,17 @@ const roleIntelligence = roles.map((role) => {
             </p>
           )}
         </section>
+        {riskScan && riskScan.riskScoreWasCapped && (
+  <div className="mt-4 rounded-lg border border-warning/30 bg-warning/10 p-3">
+    <p className="text-sm font-semibold">
+      Risk score capped at 100
+    </p>
+    <p className="mt-1 text-sm text-muted-foreground">
+      The raw score is {riskScan.rawRiskScore}, but the displayed
+      account risk score is limited to 100.
+    </p>
+  </div>
+)}
 
         <section className="space-y-4">
   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
